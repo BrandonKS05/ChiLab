@@ -54,8 +54,9 @@ jobs:
 
       - name: Run Python tests
         env:
-          ENABLE_LLM_INTERPRETATION: "false"
-          ENABLE_LLM_HIGHLIGHTS: "false"
+          ENABLE_LLM_INTERPRETATION: "true"
+          ENABLE_LLM_HIGHLIGHTS: "true"
           MODAL_ENDPOINT_URL: ""
-          LLM_API_KEY: ""
+          LLM_API_KEY: "test-key"
+          LLM_MODEL: "gpt-4.1-mini"
         run: python3 -m pytest services/lean-backend/tests/ -v
