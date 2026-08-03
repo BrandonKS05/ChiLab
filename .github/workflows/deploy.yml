@@ -1,0 +1,42 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            set -e
+            cd /home/ubuntu/treehacks-2026/services/lean-backend
+            git fetch --all
+            git reset --hard origin/main
+            docker compose pull lean-backend || true
+            docker compose up -d --build lean-backend
+
+            # Wait for the API to accept connections before declaring success.
+            HEALTH_URL="http://127.0.0.1:8000/healthz"
+            ATTEMPTS=30
+            SLEEP_SECS=2
+            i=1
+            until curl -fsS "$HEALTH_URL" >/dev/null; do
+              if [ "$i" -ge "$ATTEMPTS" ]; then
+                echo "Health check failed after $ATTEMPTS attempts."
+                docker compose ps
+                docker compose logs --tail=200 lean-backend || true
+                exit 1
+              fi
+              echo "Waiting for service health ($i/$ATTEMPTS)..."
+              i=$((i + 1))
+              sleep "$SLEEP_SECS"
+            done
+
+            docker image prune -f
