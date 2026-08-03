@@ -1,8 +1,8 @@
 (() => {
   "use strict";
 
-  const zeta = window.__zetaContent || (window.__zetaContent = {});
-  const { clamp, normalizeScope, extractText } = zeta;
+  const chilab = window.__chilabContent || (window.__chilabContent = {});
+  const { clamp, normalizeScope, extractText } = chilab;
 
 class AdapterBase {
   constructor(root) {
@@ -765,7 +765,7 @@ class DomLineAdapter extends AdapterBase {
 
 class ContentEditableAdapter extends DomLineAdapter {
   constructor(root) {
-    super(root, root, "[data-zeta-line], p, div, li, span", root);
+    super(root, root, "[data-chilab-line], p, div, li, span", root);
     this.supportsInlineHighlights = true;
   }
 
@@ -849,13 +849,13 @@ class MultiFileOverleafAdapter {
     try {
       this.ws = new WebSocket(wsUrl);
     } catch (_e) {
-      console.warn("[zeta:multifile] WebSocket construction failed", _e);
+      console.warn("[chilab:multifile] WebSocket construction failed", _e);
       this._scheduleReconnect();
       return;
     }
 
     this.ws.onopen = () => {
-      console.info("[zeta:multifile] WebSocket connected");
+      console.info("[chilab:multifile] WebSocket connected");
       this.wsReconnectAttempts = 0;
       this._startPeriodicSync();
     };
@@ -868,12 +868,12 @@ class MultiFileOverleafAdapter {
           this.conflicts = msg.conflicts || [];
           this.syncInProgress = false;
           this._notify();
-          console.info("[zeta:multifile] sync complete", {
+          console.info("[chilab:multifile] sync complete", {
             notations: this.notations.length,
             conflicts: this.conflicts.length,
           });
         } else if (msg.type === "ack") {
-          console.info("[zeta:multifile] sync ack", msg);
+          console.info("[chilab:multifile] sync ack", msg);
         }
       } catch (_e) {
         // ignore parse errors
@@ -881,11 +881,11 @@ class MultiFileOverleafAdapter {
     };
 
     this.ws.onerror = (event) => {
-      console.warn("[zeta:multifile] WebSocket error", event);
+      console.warn("[chilab:multifile] WebSocket error", event);
     };
 
     this.ws.onclose = () => {
-      console.info("[zeta:multifile] WebSocket closed");
+      console.info("[chilab:multifile] WebSocket closed");
       this.ws = null;
       this._scheduleReconnect();
     };
@@ -901,7 +901,7 @@ class MultiFileOverleafAdapter {
   _scheduleReconnect() {
     if (this.destroyed) return;
     if (this.wsReconnectAttempts >= this.maxReconnectAttempts) {
-      console.warn("[zeta:multifile] max reconnect attempts reached, falling back to REST");
+      console.warn("[chilab:multifile] max reconnect attempts reached, falling back to REST");
       return;
     }
     const delay = Math.min(2000 * Math.pow(2, this.wsReconnectAttempts), 30000);
@@ -1035,7 +1035,7 @@ class MultiFileOverleafAdapter {
         this.lastSyncAt = Date.now();
         return;
       } catch (_e) {
-        console.warn("[zeta:multifile] ws send failed, falling back to REST", _e);
+        console.warn("[chilab:multifile] ws send failed, falling back to REST", _e);
       }
     }
 
@@ -1054,12 +1054,12 @@ class MultiFileOverleafAdapter {
         this.notations = data.notations_extracted
           ? Array(data.notations_extracted).fill(null)
           : [];
-        console.info("[zeta:multifile] REST sync complete", data);
+        console.info("[chilab:multifile] REST sync complete", data);
       } else {
-        console.warn("[zeta:multifile] REST sync failed", resp.status);
+        console.warn("[chilab:multifile] REST sync failed", resp.status);
       }
     } catch (e) {
-      console.warn("[zeta:multifile] REST sync error", e);
+      console.warn("[chilab:multifile] REST sync error", e);
     } finally {
       this.syncInProgress = false;
       this.lastSyncAt = Date.now();
@@ -1091,7 +1091,7 @@ class MultiFileOverleafAdapter {
   }
 }
 
-  Object.assign(zeta, {
+  Object.assign(chilab, {
     AdapterBase,
     TextareaAdapter,
     DomLineAdapter,

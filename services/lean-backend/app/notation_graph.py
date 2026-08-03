@@ -49,7 +49,7 @@ _KNOWN_TYPES = {
     "rho": "density/correlation",
     "tau": "time constant",
     "xi": "random variable",
-    "zeta": "function",
+    "chilab": "function",
     "eta": "efficiency/coordinate",
     "kappa": "curvature/condition",
     "nu": "frequency/degree",

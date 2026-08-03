@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const zeta = window.__zetaContent || (window.__zetaContent = {});
+  const chilab = window.__chilabContent || (window.__chilabContent = {});
   const {
     DEBUG_CHAT_ONLY = false,
     SETTINGS_KEY,
@@ -30,17 +30,17 @@
     DomLineAdapter,
     TextareaAdapter,
     ContentEditableAdapter,
-    ZetaOverlay,
-    ZetaPopover,
-    ZetaPanel,
-  } = zeta;
+    ChiLabOverlay,
+    ChiLabPopover,
+    ChiLabPanel,
+  } = chilab;
 
-  const zetaLogPrefix = (tag) => `[zeta:${tag}] ${new Date().toISOString()}`;
+  const chilabLogPrefix = (tag) => `[chilab:${tag}] ${new Date().toISOString()}`;
 
   if (DEBUG_CHAT_ONLY) {
     const _info = console.info.bind(console);
     const _warn = console.warn.bind(console);
-    const chatOnly = (s) => /assistant|zeta-chat|sendChatForThread|chat endpoint|chat_request|chat_send|chat_delete|autocomplete/.test(s);
+    const chatOnly = (s) => /assistant|chilab-chat|sendChatForThread|chat endpoint|chat_request|chat_send|chat_delete|autocomplete/.test(s);
     console.info = function (...args) {
       if (!chatOnly(String(args[0] ?? ""))) return;
       _info.apply(console, args);
@@ -173,25 +173,25 @@ const AUTOCOMPLETE_MIN_FRAGMENT_WORDS = 2;
 const AUTOCOMPLETE_MAX_TEXT_WINDOW = 16000;
 const AUTOCOMPLETE_MAX_CONTEXT_WINDOW = 2400;
 const MODAL_BASE_URL =
-  "https://amirzeinali--herald-translator-translator-v1-translate-batch.modal.run";
+  "https://brandonks05--deepseek-prover-v2-api.modal.run";
 const DEFAULT_MODAL_ANALYZE_URL = `${MODAL_BASE_URL}/v1/analyze`;
 const DEFAULT_LEAN_SOLVE_URL = "http://localhost:8000/v1/lean/solve";
 const DEFAULT_LEAN_COMPLETE_URL = "http://localhost:8000/v1/lean/complete";
 const HARDCODED_ANALYZE_URL = DEFAULT_LEAN_SOLVE_URL;
 const HARDCODED_COMPLETE_URL = DEFAULT_LEAN_COMPLETE_URL;
 
-class ZetaApp {
+class ChiLabApp {
   constructor() {
     this.settings = { ...DEFAULT_SETTINGS };
     this.ignoredKeys = new Set();
 
-    this.overlay = new ZetaOverlay();
-    this.popover = new ZetaPopover(
+    this.overlay = new ChiLabOverlay();
+    this.popover = new ChiLabPopover(
       (issue) => this.applyIssue(issue),
       (issue) => this.ignoreIssue(issue)
     );
 
-    this.panel = new ZetaPanel({
+    this.panel = new ChiLabPanel({
       onTogglePanel: (open) => this.togglePanel(open),
       onRunNow: () => this.requestAnalysis("manual", true),
       onRegenerate: () => this.requestAnalysis("regenerate", true),
@@ -344,11 +344,11 @@ class ZetaApp {
   }
 
   initMultiFileSync() {
-    if (!zeta.MultiFileOverleafAdapter) return;
+    if (!chilab.MultiFileOverleafAdapter) return;
     if (!location.hostname.endsWith("overleaf.com")) return;
 
     const backendBase = HARDCODED_ANALYZE_URL.replace(/\/v1\/lean\/solve\/?$/, "");
-    this.multiFileAdapter = new zeta.MultiFileOverleafAdapter(backendBase);
+    this.multiFileAdapter = new chilab.MultiFileOverleafAdapter(backendBase);
 
     this.multiFileAdapter.onChange((state) => {
       this.notationConflicts = state.conflicts || [];
@@ -371,7 +371,7 @@ class ZetaApp {
   renderNotationDriftOverlay() {
     if (!this.notationDriftOverlay) {
       this.notationDriftOverlay = document.createElement("div");
-      this.notationDriftOverlay.className = "zeta-notation-drift-overlay";
+      this.notationDriftOverlay.className = "chilab-notation-drift-overlay";
       document.body.appendChild(this.notationDriftOverlay);
     }
 
@@ -387,42 +387,42 @@ class ZetaApp {
     overlay.replaceChildren();
 
     const header = document.createElement("div");
-    header.className = "zeta-drift-header";
+    header.className = "chilab-drift-header";
     header.innerHTML = `
-      <span class="zeta-drift-icon">⚠</span>
+      <span class="chilab-drift-icon">⚠</span>
       <strong>Notation Drift Detected</strong>
-      <span class="zeta-drift-count">${this.notationConflicts.length}</span>
-      <button type="button" class="zeta-drift-close">✕</button>
+      <span class="chilab-drift-count">${this.notationConflicts.length}</span>
+      <button type="button" class="chilab-drift-close">✕</button>
     `;
-    header.querySelector(".zeta-drift-close").addEventListener("click", () => {
+    header.querySelector(".chilab-drift-close").addEventListener("click", () => {
       overlay.classList.add("is-hidden");
     });
     overlay.appendChild(header);
 
     const list = document.createElement("ul");
-    list.className = "zeta-drift-list";
+    list.className = "chilab-drift-list";
 
     for (const conflict of this.notationConflicts.slice(0, 8)) {
       const li = document.createElement("li");
-      li.className = "zeta-drift-item";
+      li.className = "chilab-drift-item";
 
       const symbol = document.createElement("code");
-      symbol.className = "zeta-drift-symbol";
+      symbol.className = "chilab-drift-symbol";
       symbol.textContent = conflict.symbol;
 
       const msg = document.createElement("span");
-      msg.className = "zeta-drift-message";
+      msg.className = "chilab-drift-message";
       msg.textContent = conflict.message;
 
       const defs = document.createElement("div");
-      defs.className = "zeta-drift-definitions";
+      defs.className = "chilab-drift-definitions";
       for (const def of (conflict.definitions || [])) {
         const defEl = document.createElement("div");
-        defEl.className = "zeta-drift-def";
+        defEl.className = "chilab-drift-def";
         defEl.innerHTML = `<code>${def.defined_in}</code>: <em>${def.latex_type}</em>`;
         if (def.context_text) {
           const ctx = document.createElement("span");
-          ctx.className = "zeta-drift-context";
+          ctx.className = "chilab-drift-context";
           ctx.textContent = def.context_text.slice(0, 80);
           defEl.appendChild(ctx);
         }
@@ -440,33 +440,33 @@ class ZetaApp {
     if (this.reviewModePanel || !document.body) return;
 
     const panel = document.createElement("section");
-    panel.className = "zeta-review-mode-panel";
-    panel.setAttribute("aria-label", "Zeta in-document review mode");
+    panel.className = "chilab-review-mode-panel";
+    panel.setAttribute("aria-label", "ChiLab in-document review mode");
     panel.innerHTML = `
-      <div class="zeta-review-mode-header">
+      <div class="chilab-review-mode-header">
         <div>
-          <div class="zeta-review-mode-kicker">Journal Readiness</div>
-          <strong>Zeta Review Mode</strong>
+          <div class="chilab-review-mode-kicker">Journal Readiness</div>
+          <strong>ChiLab Review Mode</strong>
         </div>
-        <button type="button" class="zeta-review-mode-hide" data-zeta-review-action="toggle">Hide</button>
+        <button type="button" class="chilab-review-mode-hide" data-chilab-review-action="toggle">Hide</button>
       </div>
-      <div class="zeta-review-mode-body"></div>
+      <div class="chilab-review-mode-body"></div>
     `;
 
     panel.addEventListener("click", (event) => {
-      const button = event.target.closest("[data-zeta-review-action]");
+      const button = event.target.closest("[data-chilab-review-action]");
       if (!button || !panel.contains(button)) return;
       this.handleReviewModeAction(button);
     });
 
     document.body.appendChild(panel);
     this.reviewModePanel = panel;
-    this.reviewModeBody = panel.querySelector(".zeta-review-mode-body");
+    this.reviewModeBody = panel.querySelector(".chilab-review-mode-body");
     this.renderReviewModeIdle();
   }
 
   handleReviewModeAction(button) {
-    const action = button.dataset.zetaReviewAction;
+    const action = button.dataset.chilabReviewAction;
     if (action === "toggle") {
       this.reviewModeCollapsed = !this.reviewModeCollapsed;
       this.reviewModePanel?.classList.toggle("is-collapsed", this.reviewModeCollapsed);
@@ -501,17 +501,17 @@ class ZetaApp {
   renderReviewModeIdle(message = "Run a Pre-Check on the current Overleaf document, or use the built-in demo paper for a reliable live demo.") {
     if (!this.reviewModeBody) return;
     this.reviewModeBody.innerHTML = `
-      <div class="zeta-review-mode-state">
-        <div class="zeta-review-mode-score is-empty">--</div>
+      <div class="chilab-review-mode-state">
+        <div class="chilab-review-mode-score is-empty">--</div>
         <div>
-          <div class="zeta-review-mode-state-title">Ready for Pre-Check</div>
+          <div class="chilab-review-mode-state-title">Ready for Pre-Check</div>
           <p>${this.escapeHtml(message)}</p>
         </div>
       </div>
       ${this.reviewModeControls()}
-      <div class="zeta-review-mode-empty">
+      <div class="chilab-review-mode-empty">
         <strong>No document results yet.</strong>
-        <span>Zeta will surface notation drift, used-before-definition warnings, reviewer comments, and suggested author fixes directly in this panel.</span>
+        <span>ChiLab will surface notation drift, used-before-definition warnings, reviewer comments, and suggested author fixes directly in this panel.</span>
       </div>
       ${this.reviewModeFallbackTextarea("")}
     `;
@@ -520,15 +520,15 @@ class ZetaApp {
   renderReviewModeLoading(demoMode) {
     if (!this.reviewModeBody) return;
     this.reviewModeBody.innerHTML = `
-      <div class="zeta-review-mode-state">
-        <div class="zeta-review-mode-score is-loading">...</div>
+      <div class="chilab-review-mode-state">
+        <div class="chilab-review-mode-score is-loading">...</div>
         <div>
-          <div class="zeta-review-mode-state-title">${demoMode ? "Loading Demo Mode" : "Running Pre-Check"}</div>
-          <p>Zeta is scanning the LaTeX, extracting symbols, and building reviewer comments.</p>
+          <div class="chilab-review-mode-state-title">${demoMode ? "Loading Demo Mode" : "Running Pre-Check"}</div>
+          <p>ChiLab is scanning the LaTeX, extracting symbols, and building reviewer comments.</p>
         </div>
       </div>
       ${this.reviewModeControls()}
-      <div class="zeta-review-mode-loading">Building in-document review report...</div>
+      <div class="chilab-review-mode-loading">Building in-document review report...</div>
       ${this.reviewModeFallbackTextarea("")}
     `;
   }
@@ -536,17 +536,17 @@ class ZetaApp {
   renderReviewModeError(message) {
     if (!this.reviewModeBody) return;
     this.reviewModeBody.innerHTML = `
-      <div class="zeta-review-mode-state">
-        <div class="zeta-review-mode-score is-warning">!</div>
+      <div class="chilab-review-mode-state">
+        <div class="chilab-review-mode-score is-warning">!</div>
         <div>
-          <div class="zeta-review-mode-state-title">Could not read the active document</div>
+          <div class="chilab-review-mode-state-title">Could not read the active document</div>
           <p>${this.escapeHtml(message)}</p>
         </div>
       </div>
       ${this.reviewModeControls()}
-      <div class="zeta-review-mode-empty">
+      <div class="chilab-review-mode-empty">
         <strong>Demo-safe fallback available.</strong>
-        <span>Click <em>Use Demo Paper</em> for an instant demo, or run <code>npm run zeta:check -- --dir &lt;path&gt;</code> locally on your .tex project.</span>
+        <span>Click <em>Use Demo Paper</em> for an instant demo, or run <code>npm run chilab:check -- --dir &lt;path&gt;</code> locally on your .tex project.</span>
       </div>
       ${this.reviewModeFallbackTextarea("")}
     `;
@@ -554,19 +554,19 @@ class ZetaApp {
 
   reviewModeControls() {
     return `
-      <div class="zeta-review-mode-actions">
-        <button type="button" data-zeta-review-action="run">Run Pre-Check</button>
-        <button type="button" data-zeta-review-action="demo">Use Demo Paper</button>
-        <button type="button" data-zeta-review-action="next">Next Issue</button>
-        <button type="button" data-zeta-review-action="copy-report">Copy Reviewer Report</button>
+      <div class="chilab-review-mode-actions">
+        <button type="button" data-chilab-review-action="run">Run Pre-Check</button>
+        <button type="button" data-chilab-review-action="demo">Use Demo Paper</button>
+        <button type="button" data-chilab-review-action="next">Next Issue</button>
+        <button type="button" data-chilab-review-action="copy-report">Copy Reviewer Report</button>
       </div>
     `;
   }
 
   async runInDocumentPrecheck(demoMode) {
-    const api = window.__zetaPrecheck;
+    const api = window.__chilabPrecheck;
     if (!api?.buildPrecheckReport) {
-      this.renderReviewModeError("The local Zeta pre-check engine is not loaded in this page.");
+      this.renderReviewModeError("The local ChiLab pre-check engine is not loaded in this page.");
       return;
     }
 
@@ -577,7 +577,7 @@ class ZetaApp {
     if (!demoMode) {
       files = this.extractPrecheckFilesFromPage();
       if (!files.length) {
-        this.renderReviewModeError("Zeta could not extract LaTeX from the active Overleaf editor. The page may still be loading or the editor DOM may be unavailable.");
+        this.renderReviewModeError("ChiLab could not extract LaTeX from the active Overleaf editor. The page may still be loading or the editor DOM may be unavailable.");
         return;
       }
     }
@@ -672,7 +672,7 @@ class ZetaApp {
   }
 
   renderReviewModeReport(report) {
-    const api = window.__zetaPrecheck;
+    const api = window.__chilabPrecheck;
     if (!this.reviewModeBody || !api) return;
 
     const items = api.inDocumentReviewItems ? api.inDocumentReviewItems(report) : [];
@@ -683,15 +683,15 @@ class ZetaApp {
     const issuesLabel = `${items.length} ${items.length === 1 ? "issue" : "issues"}`;
 
     this.reviewModeBody.innerHTML = `
-      <div class="zeta-review-mode-summary">
-        <div class="zeta-review-mode-score">${report.score}</div>
-        <div class="zeta-review-mode-summary-copy">
-          <div class="zeta-review-mode-badge">${this.escapeHtml(report.certification.label)}</div>
+      <div class="chilab-review-mode-summary">
+        <div class="chilab-review-mode-score">${report.score}</div>
+        <div class="chilab-review-mode-summary-copy">
+          <div class="chilab-review-mode-badge">${this.escapeHtml(report.certification.label)}</div>
           <strong>${this.escapeHtml(report.statusBadge)}</strong>
           <span>${this.escapeHtml(modeLabel)} · ${this.escapeHtml(issuesLabel)} · ${this.escapeHtml(this.reviewModeNotice)}</span>
         </div>
       </div>
-      <div class="zeta-review-mode-cert">
+      <div class="chilab-review-mode-cert">
         ${this.escapeHtml(report.certification.description)}
       </div>
       ${this.reviewModeControls()}
@@ -712,10 +712,10 @@ class ZetaApp {
     const bullets = Array.isArray(summary?.bullets) ? summary.bullets : [];
     const signals = Array.isArray(summary?.usedSignals) ? summary.usedSignals : [];
     return `
-      <section class="zeta-review-mode-section zeta-review-ai-summary">
-        <div class="zeta-review-ai-head">
+      <section class="chilab-review-mode-section chilab-review-ai-summary">
+        <div class="chilab-review-ai-head">
           <h3>AI Reviewer Summary</h3>
-          <span class="zeta-review-ai-state is-${this.escapeHtml(state.key || "unavailable")}">${this.escapeHtml(state.label || "Unavailable")}</span>
+          <span class="chilab-review-ai-state is-${this.escapeHtml(state.key || "unavailable")}">${this.escapeHtml(state.label || "Unavailable")}</span>
         </div>
         <p>${this.escapeHtml(summary?.text || state.description || "Reviewer summary unavailable.")}</p>
         ${bullets.length ? `
@@ -724,7 +724,7 @@ class ZetaApp {
           </ul>
         ` : ""}
         ${signals.length ? `
-          <div class="zeta-review-ai-signals">Signals: ${signals.map((item) => this.escapeHtml(item)).join(", ")}</div>
+          <div class="chilab-review-ai-signals">Signals: ${signals.map((item) => this.escapeHtml(item)).join(", ")}</div>
         ` : ""}
       </section>
     `;
@@ -733,18 +733,18 @@ class ZetaApp {
   renderProblemSymbols(symbols) {
     if (!symbols.length) {
       return `
-        <section class="zeta-review-mode-section">
+        <section class="chilab-review-mode-section">
           <h3>Problem Symbols</h3>
-          <p class="zeta-review-mode-muted">No problem symbols detected by the current prototype checks.</p>
+          <p class="chilab-review-mode-muted">No problem symbols detected by the current prototype checks.</p>
         </section>
       `;
     }
     return `
-      <section class="zeta-review-mode-section">
+      <section class="chilab-review-mode-section">
         <h3>Problem Symbols</h3>
-        <div class="zeta-review-symbol-strip">
+        <div class="chilab-review-symbol-strip">
           ${symbols.map((item) => `
-            <span class="zeta-review-symbol-chip" title="${this.escapeHtml(item.title)}">
+            <span class="chilab-review-symbol-chip" title="${this.escapeHtml(item.title)}">
               <code>${this.escapeHtml(item.symbol)}</code>
               <span>${this.escapeHtml(item.severity)}</span>
             </span>
@@ -757,37 +757,37 @@ class ZetaApp {
   renderIssueCards(items, activeIndex) {
     if (!items.length) {
       return `
-        <section class="zeta-review-mode-section">
+        <section class="chilab-review-mode-section">
           <h3>Inline Issue Cards</h3>
-          <div class="zeta-review-mode-empty compact">
+          <div class="chilab-review-mode-empty compact">
             <strong>No high-severity notation or verification warnings detected.</strong>
-            <span>Zeta still recommends author review before submission.</span>
+            <span>ChiLab still recommends author review before submission.</span>
           </div>
         </section>
       `;
     }
     return `
-      <section class="zeta-review-mode-section">
+      <section class="chilab-review-mode-section">
         <h3>Inline Issue Cards</h3>
-        <div class="zeta-review-issue-list">
+        <div class="chilab-review-issue-list">
           ${items.map((item, index) => `
-            <article class="zeta-review-issue-card ${index === activeIndex ? "is-active" : ""}" data-zeta-review-issue-index="${index}">
-              <div class="zeta-review-issue-head">
-                <span class="zeta-review-severity">${this.escapeHtml(item.severity)}</span>
+            <article class="chilab-review-issue-card ${index === activeIndex ? "is-active" : ""}" data-chilab-review-issue-index="${index}">
+              <div class="chilab-review-issue-head">
+                <span class="chilab-review-severity">${this.escapeHtml(item.severity)}</span>
                 <strong>${this.escapeHtml(item.title)}</strong>
               </div>
               <p>${this.escapeHtml(item.message)}</p>
-              ${item.location ? `<div class="zeta-review-location">Location: ${this.escapeHtml(item.location)}</div>` : ""}
-              ${item.symbol ? `<div class="zeta-review-symbol-callout">Problem symbol: <code>${this.escapeHtml(item.symbol)}</code></div>` : ""}
-              ${item.snippet ? `<pre class="zeta-review-snippet">${this.escapeHtml(item.snippet)}</pre>` : ""}
-              <div class="zeta-review-why">
+              ${item.location ? `<div class="chilab-review-location">Location: ${this.escapeHtml(item.location)}</div>` : ""}
+              ${item.symbol ? `<div class="chilab-review-symbol-callout">Problem symbol: <code>${this.escapeHtml(item.symbol)}</code></div>` : ""}
+              ${item.snippet ? `<pre class="chilab-review-snippet">${this.escapeHtml(item.snippet)}</pre>` : ""}
+              <div class="chilab-review-why">
                 <strong>Why this matters</strong>
                 <span>${this.escapeHtml(item.whyThisMatters)}</span>
               </div>
-              <div class="zeta-review-fix">
+              <div class="chilab-review-fix">
                 <strong>Author Fix</strong>
                 <span>${this.escapeHtml(item.suggestedFix)}</span>
-                <button type="button" data-zeta-review-action="copy-fix" data-zeta-review-index="${index}">Copy Suggested Fix</button>
+                <button type="button" data-chilab-review-action="copy-fix" data-chilab-review-index="${index}">Copy Suggested Fix</button>
               </div>
             </article>
           `).join("")}
@@ -799,14 +799,14 @@ class ZetaApp {
   renderReviewerComments(items) {
     if (!items.length) return "";
     return `
-      <section class="zeta-review-mode-section">
+      <section class="chilab-review-mode-section">
         <h3>Reviewer Comments</h3>
-        <div class="zeta-review-comment-list">
+        <div class="chilab-review-comment-list">
           ${items.slice(0, 3).map((item, index) => `
-            <div class="zeta-review-comment">
+            <div class="chilab-review-comment">
               <strong>Reviewer Comment #${index + 1}</strong>
               <p>${this.escapeHtml(item.reviewerComment)}</p>
-              <button type="button" data-zeta-review-action="copy-comment" data-zeta-review-index="${item.index}">Copy Comment</button>
+              <button type="button" data-chilab-review-action="copy-comment" data-chilab-review-index="${item.index}">Copy Comment</button>
             </div>
           `).join("")}
         </div>
@@ -816,13 +816,13 @@ class ZetaApp {
 
   reviewModeFallbackTextarea(markdown) {
     return `
-      <textarea class="zeta-review-report-fallback" readonly aria-label="Reviewer report copy fallback">${this.escapeHtml(markdown || "")}</textarea>
-      <div class="zeta-review-copy-status" aria-live="polite"></div>
+      <textarea class="chilab-review-report-fallback" readonly aria-label="Reviewer report copy fallback">${this.escapeHtml(markdown || "")}</textarea>
+      <div class="chilab-review-copy-status" aria-live="polite"></div>
     `;
   }
 
   focusNextReviewIssue() {
-    const api = window.__zetaPrecheck;
+    const api = window.__chilabPrecheck;
     const items = api?.inDocumentReviewItems && this.reviewModeReport
       ? api.inDocumentReviewItems(this.reviewModeReport)
       : [];
@@ -832,13 +832,13 @@ class ZetaApp {
     }
     this.reviewModeIssueIndex = (this.reviewModeIssueIndex + 1) % items.length;
     this.renderReviewModeReport(this.reviewModeReport);
-    const active = this.reviewModePanel?.querySelector(".zeta-review-issue-card.is-active");
+    const active = this.reviewModePanel?.querySelector(".chilab-review-issue-card.is-active");
     if (active) active.scrollIntoView({ block: "nearest", behavior: "smooth" });
   }
 
   copyReviewIssueField(button, field, message) {
-    const api = window.__zetaPrecheck;
-    const index = Number(button.dataset.zetaReviewIndex);
+    const api = window.__chilabPrecheck;
+    const index = Number(button.dataset.chilabReviewIndex);
     const items = api?.inDocumentReviewItems && this.reviewModeReport
       ? api.inDocumentReviewItems(this.reviewModeReport)
       : [];
@@ -852,7 +852,7 @@ class ZetaApp {
   }
 
   copyCurrentReviewerReport() {
-    const api = window.__zetaPrecheck;
+    const api = window.__chilabPrecheck;
     if (!this.reviewModeReport || !api?.markdownReviewerReport) {
       this.showReviewNotice("Run Pre-Check or Use Demo Paper before copying a reviewer report.");
       return;
@@ -867,7 +867,7 @@ class ZetaApp {
       await navigator.clipboard.writeText(value);
       this.showReviewNotice(successMessage);
     } catch (_error) {
-      const fallback = this.reviewModePanel?.querySelector(".zeta-review-report-fallback");
+      const fallback = this.reviewModePanel?.querySelector(".chilab-review-report-fallback");
       if (fallback) {
         fallback.value = value;
         fallback.classList.add("is-visible");
@@ -879,7 +879,7 @@ class ZetaApp {
   }
 
   showReviewNotice(message) {
-    const status = this.reviewModePanel?.querySelector(".zeta-review-copy-status");
+    const status = this.reviewModePanel?.querySelector(".chilab-review-copy-status");
     if (!status) return;
     status.textContent = message;
     window.setTimeout(() => {
@@ -1054,9 +1054,9 @@ class ZetaApp {
   }
 
   handleRuntimeMessage(message, _sender, sendResponse) {
-    if (message && message.type === "zeta-ui-surface") {
+    if (message && message.type === "chilab-ui-surface") {
       const surface = String(message.surface || "").toLowerCase();
-      console.info(`${zetaLogPrefix("content")} ui_surface_received`, {
+      console.info(`${chilabLogPrefix("content")} ui_surface_received`, {
         surface,
       });
       if (surface === "popup" && this.settings.panelOpen) {
@@ -1067,7 +1067,7 @@ class ZetaApp {
       return true;
     }
 
-    if (message && message.type === "zeta-chat-open-thread") {
+    if (message && message.type === "chilab-chat-open-thread") {
       const threadId = String(message.threadId || "");
       const ok = this.setActiveChatThread(threadId);
       sendResponse?.({
@@ -1077,7 +1077,7 @@ class ZetaApp {
       return true;
     }
 
-    if (message && message.type === "zeta-chat-delete-thread") {
+    if (message && message.type === "chilab-chat-delete-thread") {
       const threadId = String(message.threadId || "");
       this.deleteChatThread(threadId)
         .then((ok) => sendResponse?.({ ok, threadId }))
@@ -1085,17 +1085,17 @@ class ZetaApp {
       return true;
     }
 
-    if (message && message.type === "zeta-chat-send") {
+    if (message && message.type === "chilab-chat-send") {
       const threadId = String(message.threadId || "");
       const userMessage = String(message.message || "");
-      console.info(`${zetaLogPrefix("content")} assistant zeta-chat-send received`, {
+      console.info(`${chilabLogPrefix("content")} assistant chilab-chat-send received`, {
         threadId,
         messageLength: userMessage.length,
         hasThread: this.chatById.has(threadId),
       });
       this.sendChatForThread(threadId, userMessage)
         .then((result) => {
-          console.info(`${zetaLogPrefix("content")} assistant sendChatForThread resolved`, {
+          console.info(`${chilabLogPrefix("content")} assistant sendChatForThread resolved`, {
             ok: true,
             source: result?.source,
             threadId: result?.threadId,
@@ -1103,7 +1103,7 @@ class ZetaApp {
           sendResponse?.({ ok: true, ...result });
         })
         .catch((error) => {
-          console.warn(`${zetaLogPrefix("content")} assistant sendChatForThread rejected`, {
+          console.warn(`${chilabLogPrefix("content")} assistant sendChatForThread rejected`, {
             error: String(error?.message || error),
             threadId,
           });
@@ -1115,12 +1115,12 @@ class ZetaApp {
       return true;
     }
 
-    if (!message || message.type !== "zeta-popup-action") {
+    if (!message || message.type !== "chilab-popup-action") {
       return false;
     }
 
     const action = String(message.action || "");
-    console.info(`${zetaLogPrefix("content")} popup_action_received`, {
+    console.info(`${chilabLogPrefix("content")} popup_action_received`, {
       action,
     });
 
@@ -1268,7 +1268,7 @@ class ZetaApp {
       if (!element.isConnected) {
         return;
       }
-      if (element.closest(".zeta-shell")) {
+      if (element.closest(".chilab-shell")) {
         return;
       }
       if (
@@ -1443,7 +1443,7 @@ class ZetaApp {
     }
     const target = event.target;
     if (target instanceof Element) {
-      if (target.closest(".zeta-shell, .zeta-popup-mirror, .zeta-suggestion-popover")) {
+      if (target.closest(".chilab-shell, .chilab-popup-mirror, .chilab-suggestion-popover")) {
         return;
       }
     }
@@ -1464,7 +1464,7 @@ class ZetaApp {
 
     const issue = row.issue;
     this.pinnedPopoverIssueKey = String(issue.key || "");
-    event.__zetaKeepPopover = true; // consumed by popover outside-click handler
+    event.__chilabKeepPopover = true; // consumed by popover outside-click handler
     const issueIndex = ensureArray(this.lastRun.issues).findIndex((item) => item?.key === issue.key);
     if (issueIndex >= 0) {
       this.focusedIssueIndex = issueIndex;
@@ -1532,7 +1532,7 @@ class ZetaApp {
       this.clearAutocompleteSuggestion();
     }
 
-    console.info(`${zetaLogPrefix("content")} keydown`, {
+    console.info(`${chilabLogPrefix("content")} keydown`, {
       ts,
       key: event.key,
       code,
@@ -1545,7 +1545,7 @@ class ZetaApp {
 
     if (altHeld && shiftHeld && (key === "n" || code === "KeyN")) {
       event.preventDefault();
-      console.info(`${zetaLogPrefix("content")} shortcut_match`, {
+      console.info(`${chilabLogPrefix("content")} shortcut_match`, {
         ts,
         shortcut: "Alt+Shift+N",
         action: "next-issue",
@@ -1557,7 +1557,7 @@ class ZetaApp {
 
     if (altHeld && shiftHeld && (key === "p" || code === "KeyP")) {
       event.preventDefault();
-      console.info(`${zetaLogPrefix("content")} shortcut_match`, {
+      console.info(`${chilabLogPrefix("content")} shortcut_match`, {
         ts,
         shortcut: "Alt+Shift+P",
         action: "prev-issue",
@@ -1577,7 +1577,7 @@ class ZetaApp {
 
     if (altHeld && shiftHeld && (key === "u" || code === "KeyU")) {
       event.preventDefault();
-      console.info(`${zetaLogPrefix("content")} shortcut_match`, {
+      console.info(`${chilabLogPrefix("content")} shortcut_match`, {
         ts,
         shortcut: "Alt+Shift+U",
         action: "undo-last",
@@ -1589,7 +1589,7 @@ class ZetaApp {
 
     if (altHeld && shiftHeld && (key === "c" || code === "KeyC")) {
       event.preventDefault();
-      console.info(`${zetaLogPrefix("content")} shortcut_match`, {
+      console.info(`${chilabLogPrefix("content")} shortcut_match`, {
         ts,
         shortcut: "Alt+Shift+C",
         action: "clear-chat-history",
@@ -1601,7 +1601,7 @@ class ZetaApp {
 
     if ((metaHeld || ctrlHeld) && shiftHeld && (key === "m" || code === "KeyM")) {
       event.preventDefault();
-      console.info(`${zetaLogPrefix("content")} shortcut_match`, {
+      console.info(`${chilabLogPrefix("content")} shortcut_match`, {
         ts,
         shortcut: metaHeld ? "Cmd+Shift+M" : "Ctrl+Shift+M",
         action: "manual-autocomplete",
@@ -1613,7 +1613,7 @@ class ZetaApp {
 
     if (altHeld && shiftHeld && (key === "r" || code === "KeyR")) {
       event.preventDefault();
-      console.info(`${zetaLogPrefix("content")} shortcut_match`, {
+      console.info(`${chilabLogPrefix("content")} shortcut_match`, {
         ts,
         shortcut: "Alt+Shift+R",
         action: "refresh-checker",
@@ -1625,7 +1625,7 @@ class ZetaApp {
 
     if (altHeld && shiftHeld && (key === "h" || code === "KeyH")) {
       event.preventDefault();
-      console.info(`${zetaLogPrefix("content")} shortcut_match`, {
+      console.info(`${chilabLogPrefix("content")} shortcut_match`, {
         ts,
         shortcut: "Alt+Shift+H",
         action: "clear-history",
@@ -1637,7 +1637,7 @@ class ZetaApp {
 
     if (ctrlHeld && shiftHeld && (key === "Enter" || key === "enter" || code === "Enter")) {
       event.preventDefault();
-      console.info(`${zetaLogPrefix("content")} shortcut_match`, {
+      console.info(`${chilabLogPrefix("content")} shortcut_match`, {
         ts,
         shortcut: "Ctrl+Shift+Enter",
         action: "refresh-checker",
@@ -1672,7 +1672,7 @@ class ZetaApp {
       return;
     }
     const element = document.createElement("div");
-    element.className = "zeta-tab-ghost is-hidden";
+    element.className = "chilab-tab-ghost is-hidden";
     element.addEventListener("mousedown", (event) => {
       event.preventDefault();
     });
@@ -1681,7 +1681,7 @@ class ZetaApp {
       if (!(target instanceof Element)) {
         return;
       }
-      const item = target.closest(".zeta-tab-ghost-item");
+      const item = target.closest(".chilab-tab-ghost-item");
       if (!item) {
         return;
       }
@@ -2075,7 +2075,7 @@ class ZetaApp {
       max_new_tokens: maxNewTokens,
       temperature,
       include_debug: true,
-      zeta_meta: {
+      chilab_meta: {
         reason,
         scope: "document",
         original_cursor_offset: Number(context.localCursorOffset) || 0,
@@ -2098,7 +2098,7 @@ class ZetaApp {
     const prefixLen = String(context.prefixText || "").length;
     const prefixTail = String(context.prefixText || "").slice(-80);
     const autocompleteStartedAt = performance.now();
-    console.info(`${zetaLogPrefix("autocomplete")} request start`, {
+    console.info(`${chilabLogPrefix("autocomplete")} request start`, {
       endpoint: endpointUrl,
       timeoutMs,
       prefixLen,
@@ -2132,7 +2132,7 @@ class ZetaApp {
     const noSuggestionDebug = responseJson?.no_suggestion_debug && typeof responseJson.no_suggestion_debug === "object"
       ? responseJson.no_suggestion_debug
       : null;
-    console.info(`${zetaLogPrefix("autocomplete")} request done`, {
+    console.info(`${chilabLogPrefix("autocomplete")} request done`, {
       durationMs: autocompleteDurationMs,
       ok: response?.ok,
       status: response?.status,
@@ -2626,15 +2626,15 @@ class ZetaApp {
       element.replaceChildren();
 
       const thinking = document.createElement("div");
-      thinking.className = "zeta-tab-thinking";
+      thinking.className = "chilab-tab-thinking";
       const label = document.createElement("span");
-      label.className = "zeta-tab-thinking-label";
-      label.textContent = "Zeta is thinking...";
+      label.className = "chilab-tab-thinking-label";
+      label.textContent = "ChiLab is thinking...";
       const dots = document.createElement("span");
-      dots.className = "zeta-tab-thinking-dots";
+      dots.className = "chilab-tab-thinking-dots";
       for (let i = 0; i < 3; i += 1) {
         const dot = document.createElement("span");
-        dot.className = "zeta-tab-thinking-dot";
+        dot.className = "chilab-tab-thinking-dot";
         dots.appendChild(dot);
       }
       thinking.append(label, dots);
@@ -2686,30 +2686,30 @@ class ZetaApp {
 
     if (showTopK) {
       const header = document.createElement("div");
-      header.className = "zeta-tab-ghost-header";
-      header.textContent = "Suggested by zeta";
+      header.className = "chilab-tab-ghost-header";
+      header.textContent = "Suggested by chilab";
       element.appendChild(header);
 
       const preview = document.createElement("div");
-      preview.className = "zeta-tab-ghost-preview";
+      preview.className = "chilab-tab-ghost-preview";
       preview.textContent = String(candidates[selectedIndex] || "").trimStart();
       element.appendChild(preview);
 
       const list = document.createElement("div");
-      list.className = "zeta-tab-ghost-list";
+      list.className = "chilab-tab-ghost-list";
       for (let index = 0; index < candidates.length; index += 1) {
         const item = document.createElement("button");
         item.type = "button";
-        item.className = "zeta-tab-ghost-item";
+        item.className = "chilab-tab-ghost-item";
         item.setAttribute("data-autocomplete-index", String(index));
         if (index === selectedIndex) {
           item.classList.add("is-active");
         }
         const text = document.createElement("span");
-        text.className = "zeta-tab-ghost-text";
+        text.className = "chilab-tab-ghost-text";
         text.textContent = String(candidates[index] || "").trimStart();
         const hint = document.createElement("span");
-        hint.className = "zeta-tab-ghost-hint";
+        hint.className = "chilab-tab-ghost-hint";
         hint.textContent = index === 0 ? "Tab" : "Click to select";
         item.append(text, hint);
         list.appendChild(item);
@@ -2729,7 +2729,7 @@ class ZetaApp {
       }
     } else {
       const inline = document.createElement("span");
-      inline.className = "zeta-tab-ghost-inline";
+      inline.className = "chilab-tab-ghost-inline";
       inline.textContent = String(candidates[selectedIndex] || "").replace(/^\s+/, "");
       element.appendChild(inline);
 
@@ -3068,7 +3068,7 @@ class ZetaApp {
 
     const target = event.target;
     if (target instanceof Element) {
-      if (target.closest(".zeta-shell, .zeta-popup-mirror, .zeta-suggestion-popover")) {
+      if (target.closest(".chilab-shell, .chilab-popup-mirror, .chilab-suggestion-popover")) {
         return false;
       }
     }
@@ -3709,7 +3709,7 @@ class ZetaApp {
     }
     const thread = this.chatById.get(id);
     if (!thread) {
-      console.warn(`${zetaLogPrefix("assistant")} sendChatForThread thread not found`, {
+      console.warn(`${chilabLogPrefix("assistant")} sendChatForThread thread not found`, {
         threadId: id,
         chatByIdSize: this.chatById.size,
         chatByIdKeys: Array.from(this.chatById.keys()).slice(0, 5),
@@ -3733,7 +3733,7 @@ class ZetaApp {
 
     const requestUrls = this.resolveChatEndpoints();
     const requestBody = this.buildChatRequestPayload(thread, question);
-    console.info(`${zetaLogPrefix("assistant")} sendChatForThread request`, {
+    console.info(`${chilabLogPrefix("assistant")} sendChatForThread request`, {
       threadId: thread.id,
       questionLength: question.length,
       endpointCount: requestUrls.length,
@@ -3753,7 +3753,7 @@ class ZetaApp {
     for (let i = 0; i < requestUrls.length; i += 1) {
       const requestUrl = requestUrls[i];
       try {
-        console.info(`${zetaLogPrefix("assistant")} trying chat endpoint`, {
+        console.info(`${chilabLogPrefix("assistant")} trying chat endpoint`, {
           attempt: i + 1,
           url: requestUrl,
         });
@@ -3762,7 +3762,7 @@ class ZetaApp {
           requestBody,
         });
         sourceRequestUrl = requestUrl;
-        console.info(`${zetaLogPrefix("assistant")} chat endpoint success`, {
+        console.info(`${chilabLogPrefix("assistant")} chat endpoint success`, {
           url: requestUrl,
           source: response?.source,
           answerLength: String(response?.answer || "").length,
@@ -3771,7 +3771,7 @@ class ZetaApp {
         break;
       } catch (error) {
         lastError = error;
-        console.warn(`${zetaLogPrefix("assistant")} chat endpoint failed`, {
+        console.warn(`${chilabLogPrefix("assistant")} chat endpoint failed`, {
           url: requestUrl,
           error: String(error?.message || error),
           status: error?.status,
@@ -3823,7 +3823,7 @@ class ZetaApp {
     }
 
     const errorText = String(lastError?.message || lastError || "Assistant request failed.");
-    console.warn(`${zetaLogPrefix("assistant")} all chat endpoints failed, using local fallback`, {
+    console.warn(`${chilabLogPrefix("assistant")} all chat endpoints failed, using local fallback`, {
       threadId: thread.id,
       lastError: errorText,
       triedUrls: requestUrls,
@@ -5902,7 +5902,7 @@ class ZetaApp {
       requestBody: {
         text: normalizedSentenceText,
         context: String(snapshot?.context || "").slice(0, 6000),
-        theorem_name: "zeta_candidate",
+        theorem_name: "chilab_candidate",
         imports: ["Std"],
         temperature: this.settings.mode === "accurate" ? 0.1 : 0.0,
         max_new_tokens: this.settings.mode === "accurate" ? 220 : 140,
@@ -5913,7 +5913,7 @@ class ZetaApp {
         max_iters: maxIters,
         ...(requestedModel ? { model: requestedModel } : {}),
         include_iteration_history: mode === "thinking",
-        zeta_meta: {
+        chilab_meta: {
           reason,
           scope: snapshot?.scope || this.settings.scope,
           notation: this.settings.notationStrictness,
@@ -5943,7 +5943,7 @@ class ZetaApp {
           nl_input: normalizedSentenceText,
           max_iters: maxIters,
           context: {
-            theorem_name: "zeta_candidate",
+            theorem_name: "chilab_candidate",
             imports: ["Std"],
             temperature: this.settings.mode === "accurate" ? 0.1 : 0.0,
             ...(requestedModel ? { model: requestedModel } : {}),
@@ -6014,7 +6014,7 @@ class ZetaApp {
       });
       const isChatExplain = /\/v1\/chat\/explain(?:\/)?$/.test(String(request.requestUrl || ""));
       if (isChatExplain) {
-        console.info(`${zetaLogPrefix("assistant")} sendBackendRequest chat/explain`, {
+        console.info(`${chilabLogPrefix("assistant")} sendBackendRequest chat/explain`, {
           attempt,
           url: request.requestUrl,
           timeoutMs: effectiveTimeoutMs,
@@ -6040,7 +6040,7 @@ class ZetaApp {
           timeoutMs: effectiveTimeoutMs,
         });
         if (isChatExplain) {
-          console.info(`${zetaLogPrefix("assistant")} sendBackendRequest chat/explain response`, {
+          console.info(`${chilabLogPrefix("assistant")} sendBackendRequest chat/explain response`, {
             attempt,
             status: response.status,
             ok: response.ok,
@@ -6069,7 +6069,7 @@ class ZetaApp {
         if (!response.ok) {
           const detail = response.json?.detail || response.text || response.statusText || "Request failed";
           if (isChatExplain) {
-            console.warn(`${zetaLogPrefix("assistant")} chat/explain backend returned error`, {
+            console.warn(`${chilabLogPrefix("assistant")} chat/explain backend returned error`, {
               status: response.status,
               detail: typeof detail === "string" ? detail.slice(0, 500) : detail,
             });
@@ -6160,7 +6160,7 @@ class ZetaApp {
 
       chrome.runtime.sendMessage(
         {
-          type: "zeta-http",
+          type: "chilab-http",
           ...payload,
         },
         (response) => {
@@ -6177,7 +6177,7 @@ class ZetaApp {
             return;
           }
           console.warn(
-            "[zeta:content] Backend returned error (see what server actually returned):",
+            "[chilab:content] Backend returned error (see what server actually returned):",
             {
               url: payload?.url,
               status: response.status,
@@ -6216,7 +6216,7 @@ class ZetaApp {
     if (!text) {
       return false;
     }
-    if (/unknown identifier\s+[`'"]?zeta_candidate[`'"]?/.test(text)) {
+    if (/unknown identifier\s+[`'"]?chilab_candidate[`'"]?/.test(text)) {
       return true;
     }
     const markers = [
@@ -6228,9 +6228,9 @@ class ZetaApp {
       "lake_project_dir",
       "missing lakefile",
       "compile failed: no compile attempts were executed",
-      "unknown identifier `zeta_candidate`",
-      "unknown identifier zeta_candidate",
-      "error(lean.unknownidentifier): unknown identifier `zeta_candidate`",
+      "unknown identifier `chilab_candidate`",
+      "unknown identifier chilab_candidate",
+      "error(lean.unknownidentifier): unknown identifier `chilab_candidate`",
     ];
     return markers.some((marker) => text.includes(marker));
   }
@@ -6242,7 +6242,7 @@ class ZetaApp {
       return false;
     }
     // Ignore noisy unknown-identifier diagnostics that are not useful to users.
-    if (/unknown identifier\s+[`'"]?zeta_[a-z0-9_'.-]+[`'"]?/i.test(text)) {
+    if (/unknown identifier\s+[`'"]?chilab_[a-z0-9_'.-]+[`'"]?/i.test(text)) {
       return true;
     }
     if (/unknown (?:identifier|constant)\s+[`'"]?(r|q|z|n)[`'"]?/i.test(text)) {
@@ -6267,8 +6267,8 @@ class ZetaApp {
     const suggestion = String(issue?.suggestion || issue?.suggestedFix || "").toLowerCase();
     const replacement = String(issue?.replacement || "").toLowerCase();
     const combined = `${message}\n${targetText}\n${suggestion}\n${replacement}`;
-    return /unknown identifier\s+[`'"]?zeta_candidate[`'"]?/.test(combined)
-      || /\bzeta_candidate\b/.test(targetText);
+    return /unknown identifier\s+[`'"]?chilab_candidate[`'"]?/.test(combined)
+      || /\bchilab_candidate\b/.test(targetText);
   }
 
   resolveChunkFixSuggestion(response, diagnostics, topSuggestions, feedbackItems, semanticReasons) {
@@ -7918,5 +7918,5 @@ class ZetaApp {
   }
 }
 
-  zeta.ZetaApp = ZetaApp;
+  chilab.ChiLabApp = ChiLabApp;
 })();

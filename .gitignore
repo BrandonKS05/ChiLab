@@ -12,7 +12,7 @@ __pycache__/
 node_modules/
 dist/
 build/
-zeta-report.json
-zeta-report.md
+chilab-report.json
+chilab-report.md
 *.log
 .lean-state/

@@ -83,7 +83,7 @@ test("Markdown reviewer report is copyable and includes required sections", () =
   });
   const markdown = precheck.markdownReviewerReport(report);
 
-  assert.match(markdown, /^# Zeta Scientific Pre-Check Report/);
+  assert.match(markdown, /^# ChiLab Scientific Pre-Check Report/);
   assert.match(markdown, /Readiness score:/);
   assert.match(markdown, /Certification state: Certified Demo Mode/);
   assert.match(markdown, /## Top Issues/);
@@ -149,7 +149,7 @@ test("AI reviewer summary falls back deterministically without provider", async 
   const summary = await precheck.generateReviewerSummary(report);
 
   assert.equal(summary.state.key, "heuristic_fallback");
-  assert.match(summary.text, /Zeta found/);
+  assert.match(summary.text, /ChiLab found/);
   assert.ok(summary.usedSignals.includes("unified diagnostics"));
   assert.ok(summary.usedSignals.includes("Lean/verifier info"));
 });
@@ -209,8 +209,8 @@ test("AI reviewer summary can surface unavailable state on provider failure", as
   assert.match(summary.text, /backend LLM request failed or timed out/);
 });
 
-test("CLI writes zeta-report.json and zeta-report.md for a two-file fixture project", () => {
-  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "zeta-cli-test-"));
+test("CLI writes chilab-report.json and chilab-report.md for a two-file fixture project", () => {
+  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "chilab-cli-test-"));
   try {
     // main.tex: defines sigma as matrix
     fs.writeFileSync(
@@ -230,18 +230,18 @@ Let $\sigma > 0$ be the scalar variance.
     const cliPath = path.resolve(__dirname, "../precheck/cli.js");
     execSync(`node ${cliPath} --dir ${tmpDir} --out ${tmpDir}`, { encoding: "utf8" });
 
-    const jsonPath = path.join(tmpDir, "zeta-report.json");
-    const mdPath = path.join(tmpDir, "zeta-report.md");
+    const jsonPath = path.join(tmpDir, "chilab-report.json");
+    const mdPath = path.join(tmpDir, "chilab-report.md");
 
-    assert.ok(fs.existsSync(jsonPath), "zeta-report.json should exist");
-    assert.ok(fs.existsSync(mdPath), "zeta-report.md should exist");
+    assert.ok(fs.existsSync(jsonPath), "chilab-report.json should exist");
+    assert.ok(fs.existsSync(mdPath), "chilab-report.md should exist");
 
     const reportData = JSON.parse(fs.readFileSync(jsonPath, "utf8"));
     assert.equal(typeof reportData.score, "number", "score should be a number");
     assert.ok(Array.isArray(reportData.issues), "issues should be an array");
 
     const mdContent = fs.readFileSync(mdPath, "utf8");
-    assert.match(mdContent, /Zeta/, "markdown should contain 'Zeta'");
+    assert.match(mdContent, /ChiLab/, "markdown should contain 'ChiLab'");
   } finally {
     fs.rmSync(tmpDir, { recursive: true, force: true });
   }

@@ -485,7 +485,7 @@ def main() -> None:
     parser.add_argument("--model", default="gpt-4.1", help="OpenAI model (default: gpt-4.1)")
     parser.add_argument(
         "--pipeline-url",
-        default="https://tree26--herald-math-grammarly-api.modal.run",
+        default="https://brandonks05--deepseek-prover-v2-api.modal.run",
     )
     parser.add_argument("--pipeline-api-key", default=None)
     parser.add_argument("--cases-file", default=str(CASES_PATH))

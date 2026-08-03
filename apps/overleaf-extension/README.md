@@ -1,8 +1,8 @@
-# zeta (Overleaf + browser editor extension)
+# chilab (Overleaf + browser editor extension)
 
 **Grammarly for Math**
 
-zeta now ships a real frontend shell for math statement checking:
+chilab now ships a real frontend shell for math statement checking:
 
 - injected right-side panel on pages with editable text
 - scope-aware checking (`selection`, `paragraph`, `document`)
@@ -13,9 +13,9 @@ zeta now ships a real frontend shell for math statement checking:
 - issue actions (`apply`, `ignore`, `regenerate`) plus activity/history with undo
 - persisted settings (`backend URL`, mode, scope, timeout, retries, notation strictness)
 - keyboard shortcuts for issue navigation
-- **Zeta Journal Readiness** demo dashboard with Certified Demo Mode, reviewer ledger,
+- **ChiLab Journal Readiness** demo dashboard with Certified Demo Mode, reviewer ledger,
   counterexample explanation, and one-click Markdown reviewer report
-- in-document **Zeta Review Mode** with issue cards, reviewer comments, problem-symbol chips,
+- in-document **ChiLab Review Mode** with issue cards, reviewer comments, problem-symbol chips,
   and optional backend AI reviewer summary via `/v1/review/summary`
 
 See [`../../DEMO.md`](../../DEMO.md) for the two-minute local demo script.
@@ -61,7 +61,7 @@ Configure the endpoint in the panel Settings section.
 1. Open `chrome://extensions`
 2. Enable `Developer mode`
 3. Click `Load unpacked`
-4. Select: `/Users/vayun/Desktop/zeta-brandon/apps/overleaf-extension`
+4. Select: `/path/to/ChiLab/apps/overleaf-extension`
 
 ## Keyboard shortcuts
 

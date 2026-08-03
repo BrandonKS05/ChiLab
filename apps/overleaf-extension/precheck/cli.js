@@ -2,7 +2,7 @@
 "use strict";
 
 /**
- * Zeta Pre-Check CLI
+ * ChiLab Pre-Check CLI
  *
  * Usage:
  *   node cli.js --dir <path>         scan all .tex files recursively
@@ -70,13 +70,13 @@ function parseArgs(argv) {
 // ---------------------------------------------------------------------------
 
 function die(msg) {
-  process.stderr.write(`zeta: error: ${msg}\n`);
+  process.stderr.write(`chilab: error: ${msg}\n`);
   process.exit(1);
 }
 
 function printHelp() {
   process.stdout.write(
-    `Zeta Scientific Pre-Check CLI
+    `ChiLab Scientific Pre-Check CLI
 
 Usage:
   node cli.js --dir <path> [--dir <path>...] [options]
@@ -92,8 +92,8 @@ Options:
   --help          Show this help message
 
 Outputs:
-  zeta-report.json   Machine-readable report
-  zeta-report.md     Human-readable Markdown report
+  chilab-report.json   Machine-readable report
+  chilab-report.md     Human-readable Markdown report
 `
   );
 }
@@ -166,7 +166,7 @@ function main() {
   for (const f of files) {
     const absFile = path.resolve(f);
     if (!absFile.endsWith(".tex")) {
-      die(`zeta: --file must point to a .tex file: ${absFile}`);
+      die(`chilab: --file must point to a .tex file: ${absFile}`);
     }
     if (!fs.existsSync(absFile) || !fs.statSync(absFile).isFile()) {
       die(`--file path does not exist or is not a file: ${absFile}`);
@@ -185,7 +185,7 @@ function main() {
     try {
       content = fs.readFileSync(absPath, "utf8");
     } catch (err) {
-      process.stderr.write(`zeta: could not read file: ${absPath} (${err.message}), skipping\n`);
+      process.stderr.write(`chilab: could not read file: ${absPath} (${err.message}), skipping\n`);
       continue;
     }
     filesInput.push({ file_path: path.basename(absPath), content });
@@ -235,19 +235,19 @@ function main() {
     fs.mkdirSync(absOut, { recursive: true });
   }
 
-  const jsonOutPath = path.join(absOut, "zeta-report.json");
-  const mdOutPath = path.join(absOut, "zeta-report.md");
+  const jsonOutPath = path.join(absOut, "chilab-report.json");
+  const mdOutPath = path.join(absOut, "chilab-report.md");
 
   try {
     fs.writeFileSync(jsonOutPath, JSON.stringify(jsonPayload, null, 2), "utf8");
   } catch (err) {
-    process.stderr.write(`zeta: could not write report: ${jsonOutPath} (${err.message})\n`);
+    process.stderr.write(`chilab: could not write report: ${jsonOutPath} (${err.message})\n`);
     process.exit(1);
   }
   try {
     fs.writeFileSync(mdOutPath, markdownContent, "utf8");
   } catch (err) {
-    process.stderr.write(`zeta: could not write report: ${mdOutPath} (${err.message})\n`);
+    process.stderr.write(`chilab: could not write report: ${mdOutPath} (${err.message})\n`);
     process.exit(1);
   }
 
@@ -255,7 +255,7 @@ function main() {
   if (!quiet) {
     process.stdout.write(
       [
-        `Zeta Pre-Check`,
+        `ChiLab Pre-Check`,
         `  Files scanned : ${filesInput.length}`,
         `  Issues found  : ${allIssues.length}`,
         `  Score         : ${report.score}`,

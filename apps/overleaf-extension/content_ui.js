@@ -1,8 +1,8 @@
 (() => {
   "use strict";
 
-  const zeta = window.__zetaContent || (window.__zetaContent = {});
-  const { MAX_HIGHLIGHT_RECTS, ensureArray, normalizeSeverity, clamp } = zeta;
+  const chilab = window.__chilabContent || (window.__chilabContent = {});
+  const { MAX_HIGHLIGHT_RECTS, ensureArray, normalizeSeverity, clamp } = chilab;
 
   function formatInferenceDuration(valueMs) {
     const ms = Number(valueMs);
@@ -55,10 +55,10 @@
     return candidate;
   }
 
-class ZetaOverlay {
+class ChiLabOverlay {
   constructor() {
     this.layer = document.createElement("div");
-    this.layer.className = "zeta-highlight-layer";
+    this.layer.className = "chilab-highlight-layer";
     document.body.appendChild(this.layer);
     this.rectIssueMap = [];
   }
@@ -90,7 +90,7 @@ class ZetaOverlay {
             break;
           }
           const marker = document.createElement("div");
-          marker.className = `zeta-highlight zeta-highlight--${issue.severity}`;
+          marker.className = `chilab-highlight chilab-highlight--${issue.severity}`;
           marker.style.left = `${rect.left}px`;
           marker.style.top = `${rect.top}px`;
           marker.style.width = `${rect.width}px`;
@@ -264,7 +264,7 @@ class ZetaOverlay {
   }
 }
 
-class ZetaPopover {
+class ChiLabPopover {
   constructor(onApply, onIgnore) {
     this.onApply = onApply;
     this.onIgnore = onIgnore;
@@ -280,15 +280,15 @@ class ZetaPopover {
     this.currentIssue = issue;
 
     const element = document.createElement("div");
-    element.className = "zeta-suggestion-popover";
+    element.className = "chilab-suggestion-popover";
 
     const title = document.createElement("p");
-    title.className = "zeta-suggestion-title";
+    title.className = "chilab-suggestion-title";
     title.textContent = issue.message;
     element.appendChild(title);
 
     const list = document.createElement("div");
-    list.className = "zeta-suggestion-list";
+    list.className = "chilab-suggestion-list";
 
     const suggestionText = String(issue?.suggestion || issue?.suggestedFix || "").trim();
     let resolvedReplacement = String(issue?.replacement || "").trim();
@@ -313,11 +313,11 @@ class ZetaPopover {
     if (resolvedReplacement) {
       const applyBtn = document.createElement("button");
       applyBtn.type = "button";
-      applyBtn.className = "zeta-suggestion-option zeta-suggestion-option--clickable";
+      applyBtn.className = "chilab-suggestion-option chilab-suggestion-option--clickable";
       const strong = document.createElement("strong");
       strong.textContent = isSameFix ? "Apply" : "Apply replacement";
       const span = document.createElement("span");
-      span.className = "zeta-suggestion-fix-text";
+      span.className = "chilab-suggestion-fix-text";
       span.textContent = resolvedReplacement;
       applyBtn.append(strong, span);
       applyBtn.addEventListener("click", (event) => {
@@ -328,7 +328,7 @@ class ZetaPopover {
     }
     if (suggestionText && !isSameFix) {
       const note = document.createElement("div");
-      note.className = "zeta-suggestion-note";
+      note.className = "chilab-suggestion-note";
       const label = document.createElement("strong");
       label.textContent = "Suggested fix";
       const body = document.createElement("span");
@@ -339,7 +339,7 @@ class ZetaPopover {
 
     const ignoreBtn = document.createElement("button");
     ignoreBtn.type = "button";
-    ignoreBtn.className = "zeta-suggestion-option";
+    ignoreBtn.className = "chilab-suggestion-option";
     ignoreBtn.innerHTML = "<strong>Ignore this issue</strong><span>Hide this rule hit in this project.</span>";
     ignoreBtn.addEventListener("click", (event) => {
       event.preventDefault();
@@ -393,11 +393,11 @@ class ZetaPopover {
     if (!this.element) {
       return;
     }
-    if (event?.__zetaKeepPopover) {
+    if (event?.__chilabKeepPopover) {
       return;
     }
     const target = event.target;
-    if (target instanceof Element && target.closest(".zeta-suggestion-popover")) {
+    if (target instanceof Element && target.closest(".chilab-suggestion-popover")) {
       return;
     }
     this.close();
@@ -427,141 +427,141 @@ class ZetaPopover {
   }
 }
 
-class ZetaPanel {
+class ChiLabPanel {
   constructor(handlers) {
     this.handlers = handlers;
     this.root = document.createElement("aside");
-    this.root.className = "zeta-shell";
+    this.root.className = "chilab-shell";
     this.root.setAttribute("role", "complementary");
-    this.root.setAttribute("aria-label", "zeta math checker panel");
+    this.root.setAttribute("aria-label", "chilab math checker panel");
 
     this.root.innerHTML = `
-      <header class="zeta-header">
-        <div class="zeta-header-top">
-          <div class="zeta-brand">
-            <img class="zeta-brand-logo" src="${chrome.runtime.getURL("assets/zeta-black-white-2048.png")}" alt="zeta" />
+      <header class="chilab-header">
+        <div class="chilab-header-top">
+          <div class="chilab-brand">
+            <img class="chilab-brand-logo" src="${chrome.runtime.getURL("assets/chilab-black-white-2048.png")}" alt="chilab" />
             <div>
-              <h2>zeta</h2>
+              <h2>chilab</h2>
               <p>Grammarly for Math</p>
             </div>
           </div>
-          <div class="zeta-top-right">
-            <div id="zeta-global-pill" class="zeta-global-pill">
-              <span id="zeta-global-dot" class="zeta-global-dot"></span>
-              <span id="zeta-global-text">global · idle</span>
+          <div class="chilab-top-right">
+            <div id="chilab-global-pill" class="chilab-global-pill">
+              <span id="chilab-global-dot" class="chilab-global-dot"></span>
+              <span id="chilab-global-text">global · idle</span>
             </div>
-            <button type="button" id="zeta-collapse-btn" class="zeta-icon-btn">Hide</button>
+            <button type="button" id="chilab-collapse-btn" class="chilab-icon-btn">Hide</button>
           </div>
         </div>
-        <div class="zeta-status-row">
-          <div class="zeta-status">
-            <span id="zeta-status-dot" class="zeta-status-dot"></span>
-            <span id="zeta-status-text">Idle</span>
+        <div class="chilab-status-row">
+          <div class="chilab-status">
+            <span id="chilab-status-dot" class="chilab-status-dot"></span>
+            <span id="chilab-status-text">Idle</span>
           </div>
-          <div id="zeta-inference-text" class="zeta-inference">inference --</div>
+          <div id="chilab-inference-text" class="chilab-inference">inference --</div>
         </div>
       </header>
-      <section class="zeta-toolbar">
-        <div class="zeta-field">
-          <label for="zeta-scope-select">Scope</label>
-          <select id="zeta-scope-select">
+      <section class="chilab-toolbar">
+        <div class="chilab-field">
+          <label for="chilab-scope-select">Scope</label>
+          <select id="chilab-scope-select">
             <option value="selection">Selection</option>
             <option value="paragraph">Paragraph</option>
             <option value="document">Document</option>
           </select>
         </div>
-        <div class="zeta-field">
+        <div class="chilab-field">
           <label>Mode</label>
-          <div class="zeta-mode-toggle" role="tablist" aria-label="zeta mode">
-            <button type="button" class="zeta-mode-btn" data-mode="fast">fast</button>
-            <button type="button" class="zeta-mode-btn" data-mode="accurate">accurate</button>
-            <button type="button" class="zeta-mode-btn" data-mode="auto">auto</button>
+          <div class="chilab-mode-toggle" role="tablist" aria-label="chilab mode">
+            <button type="button" class="chilab-mode-btn" data-mode="fast">fast</button>
+            <button type="button" class="chilab-mode-btn" data-mode="accurate">accurate</button>
+            <button type="button" class="chilab-mode-btn" data-mode="auto">auto</button>
           </div>
         </div>
-        <div class="zeta-toolbar-actions">
-          <button type="button" id="zeta-run-btn" class="zeta-icon-btn">Check</button>
-          <button type="button" id="zeta-settings-btn" class="zeta-icon-btn">Settings</button>
+        <div class="chilab-toolbar-actions">
+          <button type="button" id="chilab-run-btn" class="chilab-icon-btn">Check</button>
+          <button type="button" id="chilab-settings-btn" class="chilab-icon-btn">Settings</button>
         </div>
       </section>
-      <div class="zeta-content">
-        <section class="zeta-card">
-          <div class="zeta-card-header">
+      <div class="chilab-content">
+        <section class="chilab-card">
+          <div class="chilab-card-header">
             <h3>Document Health</h3>
-            <span id="zeta-sentence-stats" class="zeta-card-meta">0 cached · 0 pending</span>
+            <span id="chilab-sentence-stats" class="chilab-card-meta">0 cached · 0 pending</span>
           </div>
-          <div class="zeta-health">
-            <div class="zeta-health-meter"><span id="zeta-health-fill"></span></div>
-            <span id="zeta-health-label">100</span>
+          <div class="chilab-health">
+            <div class="chilab-health-meter"><span id="chilab-health-fill"></span></div>
+            <span id="chilab-health-label">100</span>
           </div>
-          <div class="zeta-item-actions zeta-item-actions--top">
-            <button type="button" id="zeta-regenerate-btn" class="zeta-btn">Refresh</button>
-            <button type="button" id="zeta-next-btn" class="zeta-btn">Next</button>
-            <button type="button" id="zeta-prev-btn" class="zeta-btn">Prev</button>
+          <div class="chilab-item-actions chilab-item-actions--top">
+            <button type="button" id="chilab-regenerate-btn" class="chilab-btn">Refresh</button>
+            <button type="button" id="chilab-next-btn" class="chilab-btn">Next</button>
+            <button type="button" id="chilab-prev-btn" class="chilab-btn">Prev</button>
           </div>
         </section>
-        <section class="zeta-card">
-          <div class="zeta-card-header">
+        <section class="chilab-card">
+          <div class="chilab-card-header">
             <h3>Activity & History</h3>
-            <div class="zeta-item-actions zeta-item-actions--inline">
-              <button type="button" id="zeta-undo-btn" class="zeta-btn">Undo Last</button>
-              <button type="button" id="zeta-clear-history-btn" class="zeta-btn">Clear</button>
+            <div class="chilab-item-actions chilab-item-actions--inline">
+              <button type="button" id="chilab-undo-btn" class="chilab-btn">Undo Last</button>
+              <button type="button" id="chilab-clear-history-btn" class="chilab-btn">Clear</button>
             </div>
           </div>
-          <ul id="zeta-activity" class="zeta-list"></ul>
-          <p id="zeta-activity-empty" class="zeta-empty">No activity yet.</p>
+          <ul id="chilab-activity" class="chilab-list"></ul>
+          <p id="chilab-activity-empty" class="chilab-empty">No activity yet.</p>
         </section>
-        <section class="zeta-card">
-          <div class="zeta-card-header">
+        <section class="chilab-card">
+          <div class="chilab-card-header">
             <h3>Live Feedback</h3>
-            <span id="zeta-feedback-count" class="zeta-card-meta">0</span>
+            <span id="chilab-feedback-count" class="chilab-card-meta">0</span>
           </div>
-          <ul id="zeta-issues" class="zeta-list"></ul>
-          <p id="zeta-issues-empty" class="zeta-empty">No issues found.</p>
+          <ul id="chilab-issues" class="chilab-list"></ul>
+          <p id="chilab-issues-empty" class="chilab-empty">No issues found.</p>
         </section>
-        <section id="zeta-settings-card" class="zeta-card" style="display:none">
-          <div class="zeta-card-header">
+        <section id="chilab-settings-card" class="chilab-card" style="display:none">
+          <div class="chilab-card-header">
             <h3>Autocomplete Settings</h3>
           </div>
-          <div class="zeta-settings">
-            <div class="zeta-field">
-              <label for="zeta-timeout">Timeout (ms)</label>
-              <input id="zeta-timeout" type="number" min="2000" step="500" />
+          <div class="chilab-settings">
+            <div class="chilab-field">
+              <label for="chilab-timeout">Timeout (ms)</label>
+              <input id="chilab-timeout" type="number" min="2000" step="500" />
             </div>
-            <div class="zeta-field">
-              <label for="zeta-retries">Retries</label>
-              <input id="zeta-retries" type="number" min="0" max="4" step="1" />
+            <div class="chilab-field">
+              <label for="chilab-retries">Retries</label>
+              <input id="chilab-retries" type="number" min="0" max="4" step="1" />
             </div>
-            <div class="zeta-settings-row">
+            <div class="chilab-settings-row">
               <span>Enable autocomplete</span>
-              <input id="zeta-autocomplete-enabled" type="checkbox" />
+              <input id="chilab-autocomplete-enabled" type="checkbox" />
             </div>
-            <div class="zeta-settings-row">
+            <div class="chilab-settings-row">
               <span>Auto-analyze document</span>
-              <input id="zeta-auto-analyze-document" type="checkbox" />
+              <input id="chilab-auto-analyze-document" type="checkbox" />
             </div>
-            <div class="zeta-settings-row">
+            <div class="chilab-settings-row">
               <span>Check on typing</span>
-              <input id="zeta-check-on-type" type="checkbox" />
+              <input id="chilab-check-on-type" type="checkbox" />
             </div>
-            <div class="zeta-settings-row">
+            <div class="chilab-settings-row">
               <span>Show Top-K autocomplete list</span>
-              <input id="zeta-autocomplete-topk" type="checkbox" />
+              <input id="chilab-autocomplete-topk" type="checkbox" />
             </div>
-            <div class="zeta-settings-row">
+            <div class="chilab-settings-row">
               <span>Manual trigger only (Cmd+Shift+M)</span>
-              <input id="zeta-autocomplete-manual" type="checkbox" />
+              <input id="chilab-autocomplete-manual" type="checkbox" />
             </div>
-            <div class="zeta-field">
-              <label for="zeta-notation">Notation strictness</label>
-              <select id="zeta-notation">
+            <div class="chilab-field">
+              <label for="chilab-notation">Notation strictness</label>
+              <select id="chilab-notation">
                 <option value="relaxed">Relaxed</option>
                 <option value="balanced">Balanced</option>
                 <option value="strict">Strict</option>
               </select>
             </div>
-            <button type="button" id="zeta-save-settings" class="zeta-btn zeta-btn--primary">Save Settings</button>
+            <button type="button" id="chilab-save-settings" class="chilab-btn chilab-btn--primary">Save Settings</button>
           </div>
-          <ul class="zeta-shortcuts">
+          <ul class="chilab-shortcuts">
             <li><code>⌥⇧N</code> ➡️ next issue</li>
             <li><code>⌥⇧P</code> ⬅️ previous issue</li>
             <li><code>⌘↩</code> ⚡ run check now</li>
@@ -578,61 +578,61 @@ class ZetaPanel {
     document.body.append(this.root);
     this.fab = document.createElement("button");
     this.fab.type = "button";
-    this.fab.className = "zeta-fab";
-    this.fab.setAttribute("aria-label", "Open zeta panel");
+    this.fab.className = "chilab-fab";
+    this.fab.setAttribute("aria-label", "Open chilab panel");
     this.fab.innerHTML = `
-      <img src="${chrome.runtime.getURL("assets/zeta-black-white-2048.png")}" alt="" />
+      <img src="${chrome.runtime.getURL("assets/chilab-black-white-2048.png")}" alt="" />
     `;
     document.body.append(this.fab);
     this.popupMirror = document.createElement("aside");
-    this.popupMirror.className = "zeta-popup-mirror";
+    this.popupMirror.className = "chilab-popup-mirror";
     this.popupMirror.setAttribute("aria-hidden", "true");
     this.popupMirror.innerHTML = `
       <iframe
-        class="zeta-popup-mirror-frame"
+        class="chilab-popup-mirror-frame"
         src="${chrome.runtime.getURL("popup.html?embedded=1")}"
-        title="zeta popup mirror"
+        title="chilab popup mirror"
       ></iframe>
     `;
     document.body.append(this.popupMirror);
     this.isPopupOpen = false;
 
     this.refs = {
-      statusDot: this.root.querySelector("#zeta-status-dot"),
-      statusText: this.root.querySelector("#zeta-status-text"),
-      globalDot: this.root.querySelector("#zeta-global-dot"),
-      globalText: this.root.querySelector("#zeta-global-text"),
-      globalPill: this.root.querySelector("#zeta-global-pill"),
-      inferenceText: this.root.querySelector("#zeta-inference-text"),
-      sentenceStats: this.root.querySelector("#zeta-sentence-stats"),
-      feedbackCount: this.root.querySelector("#zeta-feedback-count"),
-      scopeSelect: this.root.querySelector("#zeta-scope-select"),
-      modeToggle: this.root.querySelector(".zeta-mode-toggle"),
-      modeButtons: Array.from(this.root.querySelectorAll(".zeta-mode-btn")),
-      healthFill: this.root.querySelector("#zeta-health-fill"),
-      healthLabel: this.root.querySelector("#zeta-health-label"),
-      activity: this.root.querySelector("#zeta-activity"),
-      activityEmpty: this.root.querySelector("#zeta-activity-empty"),
-      issues: this.root.querySelector("#zeta-issues"),
-      issuesEmpty: this.root.querySelector("#zeta-issues-empty"),
-      runBtn: this.root.querySelector("#zeta-run-btn"),
-      regenerateBtn: this.root.querySelector("#zeta-regenerate-btn"),
-      nextBtn: this.root.querySelector("#zeta-next-btn"),
-      prevBtn: this.root.querySelector("#zeta-prev-btn"),
-      undoBtn: this.root.querySelector("#zeta-undo-btn"),
-      clearHistoryBtn: this.root.querySelector("#zeta-clear-history-btn"),
-      settingsBtn: this.root.querySelector("#zeta-settings-btn"),
-      collapseBtn: this.root.querySelector("#zeta-collapse-btn"),
-      settingsCard: this.root.querySelector("#zeta-settings-card"),
-      timeout: this.root.querySelector("#zeta-timeout"),
-      retries: this.root.querySelector("#zeta-retries"),
-      autocompleteEnabled: this.root.querySelector("#zeta-autocomplete-enabled"),
-      autoAnalyzeDocument: this.root.querySelector("#zeta-auto-analyze-document"),
-      checkOnType: this.root.querySelector("#zeta-check-on-type"),
-      autocompleteTopK: this.root.querySelector("#zeta-autocomplete-topk"),
-      autocompleteManual: this.root.querySelector("#zeta-autocomplete-manual"),
-      notation: this.root.querySelector("#zeta-notation"),
-      saveSettings: this.root.querySelector("#zeta-save-settings"),
+      statusDot: this.root.querySelector("#chilab-status-dot"),
+      statusText: this.root.querySelector("#chilab-status-text"),
+      globalDot: this.root.querySelector("#chilab-global-dot"),
+      globalText: this.root.querySelector("#chilab-global-text"),
+      globalPill: this.root.querySelector("#chilab-global-pill"),
+      inferenceText: this.root.querySelector("#chilab-inference-text"),
+      sentenceStats: this.root.querySelector("#chilab-sentence-stats"),
+      feedbackCount: this.root.querySelector("#chilab-feedback-count"),
+      scopeSelect: this.root.querySelector("#chilab-scope-select"),
+      modeToggle: this.root.querySelector(".chilab-mode-toggle"),
+      modeButtons: Array.from(this.root.querySelectorAll(".chilab-mode-btn")),
+      healthFill: this.root.querySelector("#chilab-health-fill"),
+      healthLabel: this.root.querySelector("#chilab-health-label"),
+      activity: this.root.querySelector("#chilab-activity"),
+      activityEmpty: this.root.querySelector("#chilab-activity-empty"),
+      issues: this.root.querySelector("#chilab-issues"),
+      issuesEmpty: this.root.querySelector("#chilab-issues-empty"),
+      runBtn: this.root.querySelector("#chilab-run-btn"),
+      regenerateBtn: this.root.querySelector("#chilab-regenerate-btn"),
+      nextBtn: this.root.querySelector("#chilab-next-btn"),
+      prevBtn: this.root.querySelector("#chilab-prev-btn"),
+      undoBtn: this.root.querySelector("#chilab-undo-btn"),
+      clearHistoryBtn: this.root.querySelector("#chilab-clear-history-btn"),
+      settingsBtn: this.root.querySelector("#chilab-settings-btn"),
+      collapseBtn: this.root.querySelector("#chilab-collapse-btn"),
+      settingsCard: this.root.querySelector("#chilab-settings-card"),
+      timeout: this.root.querySelector("#chilab-timeout"),
+      retries: this.root.querySelector("#chilab-retries"),
+      autocompleteEnabled: this.root.querySelector("#chilab-autocomplete-enabled"),
+      autoAnalyzeDocument: this.root.querySelector("#chilab-auto-analyze-document"),
+      checkOnType: this.root.querySelector("#chilab-check-on-type"),
+      autocompleteTopK: this.root.querySelector("#chilab-autocomplete-topk"),
+      autocompleteManual: this.root.querySelector("#chilab-autocomplete-manual"),
+      notation: this.root.querySelector("#chilab-notation"),
+      saveSettings: this.root.querySelector("#chilab-save-settings"),
     };
 
     this.isSettingsOpen = false;
@@ -684,7 +684,7 @@ class ZetaPanel {
         return;
       }
 
-      const item = target.closest(".zeta-item");
+      const item = target.closest(".chilab-item");
       if (!item) {
         return;
       }
@@ -719,7 +719,7 @@ class ZetaPanel {
 
   setTheme(_theme) {
     this.root.setAttribute("data-theme", "light");
-    document.documentElement.setAttribute("data-zeta-theme", "light");
+    document.documentElement.setAttribute("data-chilab-theme", "light");
   }
 
   setGlobalState(state, text) {
@@ -758,7 +758,7 @@ class ZetaPanel {
   setMode(mode) {
     const indexByMode = { fast: 0, accurate: 1, auto: 2 };
     const index = indexByMode[mode] ?? 2;
-    this.refs.modeToggle.style.setProperty("--zeta-mode-index", String(index));
+    this.refs.modeToggle.style.setProperty("--chilab-mode-index", String(index));
     for (const button of this.refs.modeButtons) {
       button.classList.toggle("is-active", button.dataset.mode === mode);
     }
@@ -785,7 +785,7 @@ class ZetaPanel {
 
     for (const entry of items) {
       const li = document.createElement("li");
-      li.className = "zeta-activity-item";
+      li.className = "chilab-activity-item";
       li.setAttribute("data-level", entry.level || "info");
       li.innerHTML = `<strong>${entry.message}</strong><p>${entry.timeLabel || ""}</p>`;
       list.appendChild(li);
@@ -804,7 +804,7 @@ class ZetaPanel {
     for (let i = 0; i < items.length; i += 1) {
       const issue = items[i];
       const li = document.createElement("li");
-      li.className = "zeta-item";
+      li.className = "chilab-item";
       li.setAttribute("data-severity", normalizeSeverity(issue.severity));
       li.setAttribute("data-issue-index", String(i));
       if (i === focusedIndex) {
@@ -815,12 +815,12 @@ class ZetaPanel {
       li.innerHTML = `<strong>${issue.category || "issue"}${targetLabel}</strong><p>${issue.message || "Review this issue."}</p>`;
 
       const actionRow = document.createElement("div");
-      actionRow.className = "zeta-item-actions";
+      actionRow.className = "chilab-item-actions";
 
       if (issue.replacement) {
         const fixBtn = document.createElement("button");
         fixBtn.type = "button";
-        fixBtn.className = "zeta-btn zeta-btn-fix-text";
+        fixBtn.className = "chilab-btn chilab-btn-fix-text";
         fixBtn.setAttribute("data-action", "apply");
         fixBtn.textContent = issue.replacement;
         fixBtn.title = "Click to apply this fix";
@@ -829,7 +829,7 @@ class ZetaPanel {
 
       const ignoreBtn = document.createElement("button");
       ignoreBtn.type = "button";
-      ignoreBtn.className = "zeta-btn";
+      ignoreBtn.className = "chilab-btn";
       ignoreBtn.setAttribute("data-action", "ignore");
       ignoreBtn.textContent = "Ignore";
       actionRow.appendChild(ignoreBtn);
@@ -869,9 +869,9 @@ class ZetaPanel {
   }
 }
 
-  Object.assign(zeta, {
-    ZetaOverlay,
-    ZetaPopover,
-    ZetaPanel,
+  Object.assign(chilab, {
+    ChiLabOverlay,
+    ChiLabPopover,
+    ChiLabPanel,
   });
 })();

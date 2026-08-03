@@ -28,17 +28,17 @@ jobs:
 
       - name: Run CLI on fixture
         run: |
-          mkdir -p /tmp/zeta-ci-demo
-          printf 'Let \\$\\sigma\\$ = covariance matrix\n\\newcommand{\\sigma}{\\Sigma}' > /tmp/zeta-ci-demo/main.tex
-          printf 'Variance is \\$\\sigma\\$\n' > /tmp/zeta-ci-demo/results.tex
-          node apps/overleaf-extension/precheck/cli.js --dir /tmp/zeta-ci-demo --out /tmp/zeta-ci-demo || true
-          cat /tmp/zeta-ci-demo/zeta-report.md
+          mkdir -p /tmp/chilab-ci-demo
+          printf 'Let \\$\\sigma\\$ = covariance matrix\n\\newcommand{\\sigma}{\\Sigma}' > /tmp/chilab-ci-demo/main.tex
+          printf 'Variance is \\$\\sigma\\$\n' > /tmp/chilab-ci-demo/results.tex
+          node apps/overleaf-extension/precheck/cli.js --dir /tmp/chilab-ci-demo --out /tmp/chilab-ci-demo || true
+          cat /tmp/chilab-ci-demo/chilab-report.md
 
-      - name: Upload zeta-report artifact
+      - name: Upload chilab-report artifact
         uses: actions/upload-artifact@v4
         with:
-          name: zeta-report
-          path: /tmp/zeta-ci-demo
+          name: chilab-report
+          path: /tmp/chilab-ci-demo
 
   python-tests:
     runs-on: ubuntu-latest

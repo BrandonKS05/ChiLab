@@ -8632,5 +8632,5 @@ module.exports = {
   parse: peg$parse
 };
 
-  window.__zetaLatexParserSimple = module.exports;
+  window.__chilabLatexParserSimple = module.exports;
 })();

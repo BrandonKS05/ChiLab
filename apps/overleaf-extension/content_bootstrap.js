@@ -1,24 +1,24 @@
 (() => {
   "use strict";
 
-  if (window.__zetaFrontendV4) {
+  if (window.__chilabFrontendV4) {
     return;
   }
   if (!location.hostname.endsWith("overleaf.com")) {
     return;
   }
 
-  const zeta = window.__zetaContent;
-  if (!zeta?.ZetaApp) {
-    console.error("zeta bootstrap failed: ZetaApp module missing.");
+  const chilab = window.__chilabContent;
+  if (!chilab?.ChiLabApp) {
+    console.error("chilab bootstrap failed: ChiLabApp module missing.");
     return;
   }
 
-  window.__zetaFrontendV4 = true;
-  const app = new zeta.ZetaApp();
+  window.__chilabFrontendV4 = true;
+  const app = new chilab.ChiLabApp();
   app.init();
-  window.__zetaApp = app;
-  window.__zetaDebug = {
+  window.__chilabApp = app;
+  window.__chilabDebug = {
     getChunkTree: () => app.chunkTree,
     getLeafChunks: () => (app.chunkTree ? app.chunkTree.leafChunks : []),
     getActiveChunkId: () => app.activeChunkId,
@@ -30,10 +30,10 @@
     },
   };
 
-  window.__zetaDestroy = () => {
+  window.__chilabDestroy = () => {
     app.destroy();
-    delete window.__zetaDebug;
-    delete window.__zetaApp;
-    delete window.__zetaFrontendV4;
+    delete window.__chilabDebug;
+    delete window.__chilabApp;
+    delete window.__chilabFrontendV4;
   };
 })();

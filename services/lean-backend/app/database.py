@@ -6,7 +6,7 @@ from pathlib import Path
 from sqlalchemy import Column, ForeignKey, String, Text, UniqueConstraint, create_engine
 from sqlalchemy.orm import DeclarativeBase, Session, relationship, sessionmaker
 
-_DB_PATH = Path(__file__).resolve().parent.parent / "zeta_demo.db"
+_DB_PATH = Path(__file__).resolve().parent.parent / "chilab_demo.db"
 _DATABASE_URL = f"sqlite:///{_DB_PATH}"
 
 engine = create_engine(_DATABASE_URL, connect_args={"check_same_thread": False})

@@ -10,7 +10,7 @@ import modal
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--app-name", default="herald-math-grammarly")
+    parser.add_argument("--app-name", default="deepseek-prover-v2")
     parser.add_argument(
         "--endpoint",
         choices=["analyze", "complete"],

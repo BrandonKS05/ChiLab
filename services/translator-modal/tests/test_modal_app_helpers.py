@@ -73,16 +73,16 @@ def test_normalize_statement_type_rewrites_continuous_real_function() -> None:
 
 def test_normalize_statement_type_rewrites_incomplete_def_header() -> None:
     """Herald-style def with no body becomes a type (params) → type for axiom _ : type."""
-    statement = "def zeta_candidate (x : ℝ) : Set (ℤ × ℕ)"
+    statement = "def chilab_candidate (x : ℝ) : Set (ℤ × ℕ)"
     normalized = app._normalize_statement_type(statement)
-    assert "def " not in normalized and "zeta_candidate" not in normalized
+    assert "def " not in normalized and "chilab_candidate" not in normalized
     assert "Set" in normalized and "→" in normalized
     assert "(x :" in normalized and ("Real" in normalized or "ℝ" in normalized)
 
 
 def test_normalize_statement_type_incomplete_def_ignores_trailing_check() -> None:
     """Trailing #check line is not included in the extracted type."""
-    statement = "def zeta_candidate (x : ℝ) : Set (ℤ × ℕ)\n#check zeta_candidate"
+    statement = "def chilab_candidate (x : ℝ) : Set (ℤ × ℕ)\n#check chilab_candidate"
     normalized = app._normalize_statement_type(statement)
     assert "#check" not in normalized
     assert "→" in normalized and "Set" in normalized
@@ -94,21 +94,21 @@ def test_normalize_statement_type_extracts_def_from_full_lean_file() -> None:
         "import Std\n\n"
         "set_option autoImplicit false\n\n"
         "namespace MathGrammar\n"
-        "def zeta_candidate (x : ℝ) : Option (ℤ × ℤ)\n"
-        "#check zeta_candidate\n"
+        "def chilab_candidate (x : ℝ) : Option (ℤ × ℤ)\n"
+        "#check chilab_candidate\n"
         "end MathGrammar\n"
     )
     normalized = app._normalize_statement_type(statement)
-    assert "def " not in normalized and "zeta_candidate" not in normalized
+    assert "def " not in normalized and "chilab_candidate" not in normalized
     assert "import " not in normalized and "namespace " not in normalized and "#check" not in normalized
     assert "→" in normalized and "Option" in normalized
 
 
 def test_normalize_statement_type_rewrites_noncomputable_def_header() -> None:
     """Lean 4 'noncomputable def name (n : ℕ) : ℝ' (no body) is normalized to a type."""
-    statement = "noncomputable def zeta_candidate (n : ℕ) : ℝ"
+    statement = "noncomputable def chilab_candidate (n : ℕ) : ℝ"
     normalized = app._normalize_statement_type(statement)
-    assert "noncomputable" not in normalized and "def " not in normalized and "zeta_candidate" not in normalized
+    assert "noncomputable" not in normalized and "def " not in normalized and "chilab_candidate" not in normalized
     assert "→" in normalized and ("Real" in normalized or "ℝ" in normalized)
 
 
@@ -118,12 +118,12 @@ def test_normalize_statement_type_noncomputable_def_in_full_file() -> None:
         "import Std\n\n"
         "set_option autoImplicit false\n\n"
         "namespace MathGrammar\n"
-        "noncomputable def zeta_candidate (n : ℕ) : ℝ\n"
-        "#check zeta_candidate\n"
+        "noncomputable def chilab_candidate (n : ℕ) : ℝ\n"
+        "#check chilab_candidate\n"
         "end MathGrammar\n"
     )
     normalized = app._normalize_statement_type(statement)
-    assert "def " not in normalized and "noncomputable" not in normalized and "zeta_candidate" not in normalized
+    assert "def " not in normalized and "noncomputable" not in normalized and "chilab_candidate" not in normalized
     assert "→" in normalized
 
 
@@ -133,15 +133,15 @@ def test_sanitize_lean_source_def_headers_replaces_def_line_with_axiom() -> None
         "import Std\n\n"
         "set_option autoImplicit false\n\n"
         "namespace MathGrammar\n"
-        "def zeta_candidate (x : ℝ) : Set (ℤ × ℤ)\n"
-        "#check zeta_candidate\n"
+        "def chilab_candidate (x : ℝ) : Set (ℤ × ℤ)\n"
+        "#check chilab_candidate\n"
         "end MathGrammar\n"
     )
-    out = app._sanitize_lean_source_def_headers(lean_source, "zeta_candidate")
-    assert "def zeta_candidate" not in out
-    assert "axiom zeta_candidate :" in out
+    out = app._sanitize_lean_source_def_headers(lean_source, "chilab_candidate")
+    assert "def chilab_candidate" not in out
+    assert "axiom chilab_candidate :" in out
     assert "→" in out and "Set" in out
-    assert "#check zeta_candidate" in out
+    assert "#check chilab_candidate" in out
 
 
 def test_refine_statement_type_rewrites_incomplete_let_when_diagnostic_has_check() -> None:

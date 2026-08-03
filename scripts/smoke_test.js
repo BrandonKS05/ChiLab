@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
 /**
- * Smoke test for Zeta backend
+ * Smoke test for ChiLab backend
  * Verifies backend health and basic solve endpoint functionality
  * Usage: node scripts/smoke_test.js
- * Environment: ZETA_BACKEND_URL (default: http://localhost:8000)
+ * Environment: CHILAB_BACKEND_URL (default: http://localhost:8000)
  */
 
 const http = require("http");
@@ -73,7 +73,7 @@ function httpRequest(urlStr, options = {}, body = null) {
  * Run the smoke test
  */
 async function runSmokeTest() {
-  const backendUrl = process.env.ZETA_BACKEND_URL || DEFAULT_BACKEND_URL;
+  const backendUrl = process.env.CHILAB_BACKEND_URL || DEFAULT_BACKEND_URL;
 
   try {
     // Step 1: Check backend health
@@ -88,7 +88,7 @@ async function runSmokeTest() {
       console.error(
         "  cd services/lean-backend && uvicorn app.main:app --reload --port 8000"
       );
-      console.error("Set ZETA_BACKEND_URL env var to override the default URL.");
+      console.error("Set CHILAB_BACKEND_URL env var to override the default URL.");
       process.exit(1);
     }
 

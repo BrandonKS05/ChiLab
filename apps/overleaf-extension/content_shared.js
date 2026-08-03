@@ -1,18 +1,18 @@
 (() => {
   "use strict";
 
-  const zeta = window.__zetaContent || (window.__zetaContent = {});
+  const chilab = window.__chilabContent || (window.__chilabContent = {});
 
   /** Set to true to mute all logs except chat/assistant (turn off when done debugging). */
   const DEBUG_CHAT_ONLY = true;
 
-  const SETTINGS_KEY = "zetaSettings";
-  const MODE_KEY = "zetaMode";
-  const IGNORED_KEY = "zetaIgnoredIssueKeys";
-  const TELEMETRY_KEY = "zetaTelemetry";
-  const PANEL_SNAPSHOT_KEY = "zetaPanelSnapshot";
-  const CHAT_SNAPSHOT_KEY = "zetaChatSnapshot";
-  const UI_SURFACE_KEY = "zetaUiSurface";
+  const SETTINGS_KEY = "chilabSettings";
+  const MODE_KEY = "chilabMode";
+  const IGNORED_KEY = "chilabIgnoredIssueKeys";
+  const TELEMETRY_KEY = "chilabTelemetry";
+  const PANEL_SNAPSHOT_KEY = "chilabPanelSnapshot";
+  const CHAT_SNAPSHOT_KEY = "chilabChatSnapshot";
+  const UI_SURFACE_KEY = "chilabUiSurface";
   const CACHE_TTL_MS = 90 * 1000;
   const MAX_HIGHLIGHT_RECTS = 120;
 
@@ -34,7 +34,7 @@
   const MODE_SET = new Set(["fast", "accurate", "auto"]);
   const SCOPE_SET = new Set(["selection", "paragraph", "document"]);
   const THEME_SET = new Set(["dark", "light"]);
-  const LOG_PREFIX = "[zeta]";
+  const LOG_PREFIX = "[chilab]";
   const SEVERITY_WEIGHT = {
     error: 18,
     warning: 8,
@@ -216,7 +216,7 @@
     }
   }
 
-  Object.assign(zeta, {
+  Object.assign(chilab, {
     DEBUG_CHAT_ONLY,
     SETTINGS_KEY,
     MODE_KEY,

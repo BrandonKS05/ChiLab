@@ -31,7 +31,7 @@ HTTP routes under the `api` endpoint:
 ## 2. Local setup
 
 ```bash
-cd /Users/aryan/Desktop/treehacks-2026/services/translator-modal
+cd /path/to/ChiLab/services/translator-modal
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements-local.txt
@@ -61,7 +61,7 @@ export CORS_ALLOW_ORIGINS="*"
 ## 4. Deploy
 
 ```bash
-cd /Users/aryan/Desktop/treehacks-2026
+cd /path/to/ChiLab
 modal deploy services/translator-modal/modal_app.py
 ```
 
@@ -70,7 +70,7 @@ After deploy, Modal prints a URL for `api`. Use that as your backend base URL.
 ## 5. Warm up model (recommended once after deploy)
 
 ```bash
-cd /Users/aryan/Desktop/treehacks-2026/services/translator-modal
+cd /path/to/ChiLab/services/translator-modal
 source .venv/bin/activate
 python query_http.py \
   --base-url "https://<your-api-endpoint>.modal.run" \
@@ -88,7 +88,7 @@ curl -X POST "https://<your-api-endpoint>.modal.run/v1/warmup"
 ## 6. Query via Modal SDK (Python)
 
 ```bash
-cd /Users/aryan/Desktop/treehacks-2026/services/translator-modal
+cd /path/to/ChiLab/services/translator-modal
 source .venv/bin/activate
 python query_modal.py \
   --text "If a and b are real numbers and a = b, then b = a." \
@@ -251,7 +251,7 @@ Optional vLLM tuning env vars:
 Run all built-in test prompts and save responses:
 
 ```bash
-cd /Users/aryan/Desktop/treehacks-2026/services/translator-modal
+cd /path/to/ChiLab/services/translator-modal
 source .venv/bin/activate
 python run_eval_suite.py \
   --base-url "https://<your-api-endpoint>.modal.run" \
@@ -260,18 +260,18 @@ python run_eval_suite.py \
 
 Inputs are in:
 
-- `/Users/aryan/Desktop/treehacks-2026/services/translator-modal/evals/cases.json`
+- `/path/to/ChiLab/services/translator-modal/evals/cases.json`
 
 Reports are saved under:
 
-- `/Users/aryan/Desktop/treehacks-2026/services/translator-modal/evals/results/`
+- `/path/to/ChiLab/services/translator-modal/evals/results/`
 
 ## 12. Paragraph-level dataset (ProofNet#)
 
 Generate larger paragraph-level cases from Hugging Face dataset `PAug/ProofNetSharp`:
 
 ```bash
-cd /Users/aryan/Desktop/treehacks-2026/services/translator-modal
+cd /path/to/ChiLab/services/translator-modal
 source .venv/bin/activate
 pip install -r requirements-dev.txt
 python evals/build_proofnetsharp_cases.py \
@@ -297,7 +297,7 @@ python run_eval_suite.py \
 ## 13. Pytest
 
 ```bash
-cd /Users/aryan/Desktop/treehacks-2026/services/translator-modal
+cd /path/to/ChiLab/services/translator-modal
 source .venv/bin/activate
 pip install -r requirements-dev.txt
 pytest

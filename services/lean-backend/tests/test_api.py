@@ -453,8 +453,8 @@ def test_solve_llm_repair_def_check_after_def_check_failure(
         "import Std\n\n"
         "set_option autoImplicit false\n\n"
         "namespace MathGrammar\n"
-        "def zeta_candidate (x : Expr) : MetaM (Option (Expr × Expr))\n"
-        "#check zeta_candidate\n"
+        "def chilab_candidate (x : Expr) : MetaM (Option (Expr × Expr))\n"
+        "#check chilab_candidate\n"
         "end MathGrammar\n"
     )
     good_code = (
@@ -477,7 +477,7 @@ def test_solve_llm_repair_def_check_after_def_check_failure(
         return GeneratedLean(code=bad_code, metadata={"status": "unchecked", "is_valid_lean": False})
 
     async def fake_compile_lean(code: str, settings=None) -> CompileResult:
-        if "def zeta_candidate" in code:
+        if "def chilab_candidate" in code:
             return CompileResult(
                 success=False,
                 stdout="",

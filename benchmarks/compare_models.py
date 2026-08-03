@@ -237,7 +237,7 @@ def _parse_args() -> argparse.Namespace:
     p.add_argument(
         "--herald-url",
         required=True,
-        help="Base URL of the Herald Modal deployment (e.g. https://user--herald-math-grammarly-api.modal.run)",
+        help="Base URL of the Herald Modal deployment (e.g. https://user--deepseek-prover-v2-api.modal.run)",
     )
     p.add_argument(
         "--deepseek-url",
@@ -257,8 +257,8 @@ def _parse_args() -> argparse.Namespace:
     )
     p.add_argument(
         "--api-key",
-        default=os.environ.get("ZETA_API_KEY"),
-        help="API key for both Modal deployments (env: ZETA_API_KEY)",
+        default=os.environ.get("CHILAB_API_KEY"),
+        help="API key for both Modal deployments (env: CHILAB_API_KEY)",
     )
     p.add_argument(
         "--out",

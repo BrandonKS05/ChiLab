@@ -2,10 +2,10 @@
 
 /** Set to true to mute all logs except chat/explain (turn off when done debugging). */
 const DEBUG_CHAT_ONLY = true;
-const zetaLogPrefix = (tag) => `[zeta:${tag}] ${new Date().toISOString()}`;
+const chilabLogPrefix = (tag) => `[chilab:${tag}] ${new Date().toISOString()}`;
 
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
-  if (!message || message.type !== "zeta-http") {
+  if (!message || message.type !== "chilab-http") {
     return false;
   }
 
@@ -27,7 +27,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   const isChatExplain = typeof url === "string" && url.includes("/v1/chat/explain");
   const isComplete = typeof url === "string" && url.includes("/v1/complete");
   if (!DEBUG_CHAT_ONLY || isChatExplain || isComplete) {
-    console.info(`${zetaLogPrefix("bg")} http_request_start`, {
+    console.info(`${chilabLogPrefix("bg")} http_request_start`, {
       method,
       url,
       timeoutMs,
@@ -58,7 +58,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
       const durationMs = Date.now() - startedAt;
       if (!DEBUG_CHAT_ONLY || isChatExplain || isComplete) {
-        console.info(`${zetaLogPrefix("bg")} http_response`, {
+        console.info(`${chilabLogPrefix("bg")} http_response`, {
           method,
           url,
           status: response.status,
@@ -68,7 +68,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
       }
       if (!response.ok) {
         const bodyPreview = typeof text === "string" ? text.slice(0, 800) : String(text);
-        console.warn(`${zetaLogPrefix("bg")} http_response_error (see what server returned)`, {
+        console.warn(`${chilabLogPrefix("bg")} http_response_error (see what server returned)`, {
           url,
           status: response.status,
           statusText: response.statusText,
@@ -79,7 +79,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
         });
       }
       if (isComplete && json) {
-        console.info(`${zetaLogPrefix("bg")} complete response`, {
+        console.info(`${chilabLogPrefix("bg")} complete response`, {
           durationMs,
           serverLatencyMs: json.latency_ms,
           timings_ms: json.timings_ms,
@@ -87,7 +87,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
         });
       }
       if (isChatExplain) {
-        console.info(`${zetaLogPrefix("bg")} chat/explain response detail`, {
+        console.info(`${chilabLogPrefix("bg")} chat/explain response detail`, {
           status: response.status,
           ok: response.ok,
           durationMs,
@@ -109,7 +109,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     .catch((error) => {
       const isAbort = error?.name === "AbortError";
       if (!DEBUG_CHAT_ONLY || isChatExplain || isComplete) {
-        console.warn(`${zetaLogPrefix("bg")} http_error`, {
+        console.warn(`${chilabLogPrefix("bg")} http_error`, {
           method,
           url,
           durationMs: Date.now() - startedAt,

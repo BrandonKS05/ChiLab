@@ -112,7 +112,7 @@ If you need project context (imports, dependencies), set `LAKE_PROJECT_DIR` to a
 ## Local Run
 
 ```bash
-cd /Users/williamfeng/Documents/treehacks-2026/services/lean-backend
+cd /path/to/ChiLab/services/lean-backend
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
@@ -124,7 +124,7 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ## Docker Run
 
 ```bash
-cd /Users/williamfeng/Documents/treehacks-2026/services/lean-backend
+cd /path/to/ChiLab/services/lean-backend
 cp .env.example .env
 # edit .env
 docker compose up --build
@@ -213,7 +213,7 @@ Example response shape:
 ## Tests
 
 ```bash
-cd /Users/williamfeng/Documents/treehacks-2026/services/lean-backend
+cd /path/to/ChiLab/services/lean-backend
 source .venv/bin/activate
 pytest -q
 ```

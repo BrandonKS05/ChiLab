@@ -450,7 +450,7 @@ _REVIEW_SUMMARY_CONTEXT_MAX_CHARS = 12_000
 
 def _review_summary_system_prompt() -> str:
     return (
-        "You are Zeta's AI reviewer summary engine for mathematical LaTeX papers. "
+        "You are ChiLab's AI reviewer summary engine for mathematical LaTeX papers. "
         "Analyze the supplied pre-check context as a scientific peer reviewer would. "
         "Use unified diagnostics, extracted math entities, suggested repairs, and Lean/verifier signals when present. "
         "Be concise, high-impact, and specific. Focus on notation consistency, undefined or late-defined symbols, "
@@ -465,7 +465,7 @@ def _review_summary_system_prompt() -> str:
 def _review_summary_user_prompt(context: dict[str, Any]) -> str:
     context_json = json.dumps(context, ensure_ascii=False, sort_keys=True)
     return (
-        "Generate a Zeta AI Reviewer Summary from this provider-neutral pre-check context.\n\n"
+        "Generate a ChiLab AI Reviewer Summary from this provider-neutral pre-check context.\n\n"
         "Rules:\n"
         "- Prioritize concrete issues over generic praise.\n"
         "- Mention Lean/verifier information only if it is present.\n"

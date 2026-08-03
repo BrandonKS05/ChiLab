@@ -4,22 +4,22 @@
   /** Set to true to mute all logs except chat/assistant (turn off when done debugging). */
   const DEBUG_CHAT_ONLY = true;
 
-  const MODE_KEY = "zetaMode";
-  const SETTINGS_KEY = "zetaSettings";
-  const TELEMETRY_KEY = "zetaTelemetry";
-  const PANEL_SNAPSHOT_KEY = "zetaPanelSnapshot";
-  const CHAT_SNAPSHOT_KEY = "zetaChatSnapshot";
-  const UI_SURFACE_KEY = "zetaUiSurface";
+  const MODE_KEY = "chilabMode";
+  const SETTINGS_KEY = "chilabSettings";
+  const TELEMETRY_KEY = "chilabTelemetry";
+  const PANEL_SNAPSHOT_KEY = "chilabPanelSnapshot";
+  const CHAT_SNAPSHOT_KEY = "chilabChatSnapshot";
+  const UI_SURFACE_KEY = "chilabUiSurface";
   const FALLBACK_MODE = "auto";
   const IS_EMBEDDED = new URLSearchParams(window.location.search).get("embedded") === "1";
   if (IS_EMBEDDED && document.body) {
-    document.body.setAttribute("data-zeta-embedded", "1");
+    document.body.setAttribute("data-chilab-embedded", "1");
   }
 
   if (DEBUG_CHAT_ONLY) {
     const _info = console.info.bind(console);
     const _warn = console.warn.bind(console);
-    const chatOnly = (s) => /assistant|chat_send|chat_delete|zeta-chat|tab_message/.test(s);
+    const chatOnly = (s) => /assistant|chat_send|chat_delete|chilab-chat|tab_message/.test(s);
     console.info = function (...args) {
       if (!chatOnly(String(args[0] ?? ""))) return;
       _info.apply(console, args);
@@ -47,63 +47,63 @@
     auto: "Auto balances speed and stability for long text.",
   };
 
-  const buttons = Array.from(document.querySelectorAll(".zeta-mode-btn"));
-  const panelNavButtons = Array.from(document.querySelectorAll(".zeta-top-nav-btn"));
+  const buttons = Array.from(document.querySelectorAll(".chilab-mode-btn"));
+  const panelNavButtons = Array.from(document.querySelectorAll(".chilab-top-nav-btn"));
   const panels = Array.from(document.querySelectorAll("[data-panel-content]"));
-  const panelNav = document.querySelector(".zeta-top-nav");
-  const panelNavIndicator = document.querySelector(".zeta-top-nav-indicator");
-  const note = document.getElementById("zeta-mode-note");
-  const toggle = document.querySelector(".zeta-mode-toggle");
-  const indicator = document.querySelector(".zeta-mode-indicator");
-  const inferenceValue = document.getElementById("zeta-last-inference");
-  const statusLabel = document.getElementById("zeta-last-status");
-  const healthFill = document.getElementById("zeta-health-fill");
-  const healthLabel = document.getElementById("zeta-health-label");
-  const healthStats = document.getElementById("zeta-health-stats");
-  const healthTooltip = document.getElementById("zeta-health-tooltip");
-  const activityCount = document.getElementById("zeta-activity-count");
-  const activityList = document.getElementById("zeta-activity-list");
-  const activityEmpty = document.getElementById("zeta-activity-empty");
-  const macrosCount = document.getElementById("zeta-macros-count");
-  const macrosList = document.getElementById("zeta-macros-list");
-  const macrosEmpty = document.getElementById("zeta-macros-empty");
-  const graphCount = document.getElementById("zeta-graph-count");
-  const graphList = document.getElementById("zeta-graph-list");
-  const graphEmpty = document.getElementById("zeta-graph-empty");
-  const assistantCount = document.getElementById("zeta-assistant-count");
-  const assistantThreads = document.getElementById("zeta-assistant-threads");
-  const assistantThreadsEmpty = document.getElementById("zeta-assistant-threads-empty");
-  const assistantMeta = document.getElementById("zeta-assistant-meta");
-  const assistantMessages = document.getElementById("zeta-assistant-messages");
-  const assistantMessagesEmpty = document.getElementById("zeta-assistant-messages-empty");
-  const assistantQueueEl = document.getElementById("zeta-assistant-queue");
-  const assistantLayout = document.getElementById("zeta-assistant-layout");
-  const assistantCollapseBtn = document.getElementById("zeta-assistant-collapse");
-  const assistantForm = document.getElementById("zeta-assistant-form");
-  const assistantInput = document.getElementById("zeta-assistant-input");
-  const assistantSend = document.getElementById("zeta-assistant-send");
-  const autoAnalyzeDocumentToggle = document.getElementById("zeta-auto-analyze-document-toggle");
-  const autocompleteEnabledToggle = document.getElementById("zeta-autocomplete-enabled-toggle");
-  const backendTopKToggle = document.getElementById("zeta-autocomplete-topk-toggle");
-  const backendManualToggle = document.getElementById("zeta-autocomplete-manual-toggle");
-  const backendStatus = document.getElementById("zeta-backend-status");
-  const readinessScore = document.getElementById("zeta-readiness-score");
-  const readinessStatus = document.getElementById("zeta-readiness-status");
-  const certifiedStamp = document.getElementById("zeta-certified-stamp");
-  const certifiedExplainer = document.getElementById("zeta-certified-explainer");
-  const precheckDemoBtn = document.getElementById("zeta-precheck-demo");
-  const copyReviewerReportBtn = document.getElementById("zeta-copy-reviewer-report");
-  const copyStatus = document.getElementById("zeta-copy-status");
-  const readinessLoading = document.getElementById("zeta-readiness-loading");
-  const readinessError = document.getElementById("zeta-readiness-error");
-  const readinessErrorText = document.getElementById("zeta-readiness-error-text");
-  const readinessMode = document.getElementById("zeta-readiness-mode");
-  const readinessCounts = document.getElementById("zeta-readiness-counts");
-  const reviewerConcerns = document.getElementById("zeta-reviewer-concerns");
-  const authorFixes = document.getElementById("zeta-author-fixes");
-  const counterexampleBox = document.getElementById("zeta-counterexample-box");
-  const reviewLedger = document.getElementById("zeta-review-ledger");
-  const reviewerReportPreview = document.getElementById("zeta-reviewer-report-preview");
+  const panelNav = document.querySelector(".chilab-top-nav");
+  const panelNavIndicator = document.querySelector(".chilab-top-nav-indicator");
+  const note = document.getElementById("chilab-mode-note");
+  const toggle = document.querySelector(".chilab-mode-toggle");
+  const indicator = document.querySelector(".chilab-mode-indicator");
+  const inferenceValue = document.getElementById("chilab-last-inference");
+  const statusLabel = document.getElementById("chilab-last-status");
+  const healthFill = document.getElementById("chilab-health-fill");
+  const healthLabel = document.getElementById("chilab-health-label");
+  const healthStats = document.getElementById("chilab-health-stats");
+  const healthTooltip = document.getElementById("chilab-health-tooltip");
+  const activityCount = document.getElementById("chilab-activity-count");
+  const activityList = document.getElementById("chilab-activity-list");
+  const activityEmpty = document.getElementById("chilab-activity-empty");
+  const macrosCount = document.getElementById("chilab-macros-count");
+  const macrosList = document.getElementById("chilab-macros-list");
+  const macrosEmpty = document.getElementById("chilab-macros-empty");
+  const graphCount = document.getElementById("chilab-graph-count");
+  const graphList = document.getElementById("chilab-graph-list");
+  const graphEmpty = document.getElementById("chilab-graph-empty");
+  const assistantCount = document.getElementById("chilab-assistant-count");
+  const assistantThreads = document.getElementById("chilab-assistant-threads");
+  const assistantThreadsEmpty = document.getElementById("chilab-assistant-threads-empty");
+  const assistantMeta = document.getElementById("chilab-assistant-meta");
+  const assistantMessages = document.getElementById("chilab-assistant-messages");
+  const assistantMessagesEmpty = document.getElementById("chilab-assistant-messages-empty");
+  const assistantQueueEl = document.getElementById("chilab-assistant-queue");
+  const assistantLayout = document.getElementById("chilab-assistant-layout");
+  const assistantCollapseBtn = document.getElementById("chilab-assistant-collapse");
+  const assistantForm = document.getElementById("chilab-assistant-form");
+  const assistantInput = document.getElementById("chilab-assistant-input");
+  const assistantSend = document.getElementById("chilab-assistant-send");
+  const autoAnalyzeDocumentToggle = document.getElementById("chilab-auto-analyze-document-toggle");
+  const autocompleteEnabledToggle = document.getElementById("chilab-autocomplete-enabled-toggle");
+  const backendTopKToggle = document.getElementById("chilab-autocomplete-topk-toggle");
+  const backendManualToggle = document.getElementById("chilab-autocomplete-manual-toggle");
+  const backendStatus = document.getElementById("chilab-backend-status");
+  const readinessScore = document.getElementById("chilab-readiness-score");
+  const readinessStatus = document.getElementById("chilab-readiness-status");
+  const certifiedStamp = document.getElementById("chilab-certified-stamp");
+  const certifiedExplainer = document.getElementById("chilab-certified-explainer");
+  const precheckDemoBtn = document.getElementById("chilab-precheck-demo");
+  const copyReviewerReportBtn = document.getElementById("chilab-copy-reviewer-report");
+  const copyStatus = document.getElementById("chilab-copy-status");
+  const readinessLoading = document.getElementById("chilab-readiness-loading");
+  const readinessError = document.getElementById("chilab-readiness-error");
+  const readinessErrorText = document.getElementById("chilab-readiness-error-text");
+  const readinessMode = document.getElementById("chilab-readiness-mode");
+  const readinessCounts = document.getElementById("chilab-readiness-counts");
+  const reviewerConcerns = document.getElementById("chilab-reviewer-concerns");
+  const authorFixes = document.getElementById("chilab-author-fixes");
+  const counterexampleBox = document.getElementById("chilab-counterexample-box");
+  const reviewLedger = document.getElementById("chilab-review-ledger");
+  const reviewerReportPreview = document.getElementById("chilab-reviewer-report-preview");
 
   let hasInitialized = false;
   let hasInitializedPanelNav = false;
@@ -130,10 +130,10 @@
   let pipelineModalMeta = null;
   let pipelineModalBody = null;
   const nowTs = () => new Date().toISOString();
-  const zetaLogPrefix = (tag) => `[zeta:${tag}] ${nowTs()}`;
+  const chilabLogPrefix = (tag) => `[chilab:${tag}] ${nowTs()}`;
   const LATEX_PREVIEW_LIMIT = 160;
-  const LATEX_PARSER = window.__zetaLatexParserSimple && typeof window.__zetaLatexParserSimple.parse === "function"
-    ? window.__zetaLatexParserSimple
+  const LATEX_PARSER = window.__chilabLatexParserSimple && typeof window.__chilabLatexParserSimple.parse === "function"
+    ? window.__chilabLatexParserSimple
     : null;
   const MATH_COMMAND_SYMBOLS = Object.freeze({
     alpha: "alpha",
@@ -299,7 +299,7 @@
         return;
       }
       chrome.tabs.sendMessage(activeTab.id, {
-        type: "zeta-ui-surface",
+        type: "chilab-ui-surface",
         surface,
       }, () => {
         // no-op; best-effort sync
@@ -309,7 +309,7 @@
 
   function sendActionToActiveTab(action, payload = null) {
     const extras = payload && typeof payload === "object" ? payload : {};
-    sendMessageToActiveTab({ type: "zeta-popup-action", action, ...extras }, "popup_action", () => ({
+    sendMessageToActiveTab({ type: "chilab-popup-action", action, ...extras }, "popup_action", () => ({
       action,
       chunkId: extras.chunkId || null,
     }));
@@ -317,7 +317,7 @@
 
   function sendMessageToActiveTab(message, tag, extraPayloadFactory = null, onResponse = null) {
     if (!chrome?.tabs?.query || !chrome?.tabs?.sendMessage) {
-      console.warn(`${zetaLogPrefix("popup")} tabs_api_unavailable`, { tag });
+      console.warn(`${chilabLogPrefix("popup")} tabs_api_unavailable`, { tag });
       if (typeof onResponse === "function") {
         onResponse(null);
       }
@@ -326,14 +326,14 @@
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       const activeTab = tabs && tabs[0];
       if (!activeTab?.id) {
-        console.warn(`${zetaLogPrefix("popup")} no_active_tab`, { tag });
+        console.warn(`${chilabLogPrefix("popup")} no_active_tab`, { tag });
         if (typeof onResponse === "function") {
           onResponse(null);
         }
         return;
       }
       const extra = typeof extraPayloadFactory === "function" ? extraPayloadFactory() : null;
-      console.info(`${zetaLogPrefix("popup")} sending_tab_message`, {
+      console.info(`${chilabLogPrefix("popup")} sending_tab_message`, {
         tag,
         tabId: activeTab.id,
         ...(extra || {}),
@@ -341,7 +341,7 @@
       chrome.tabs.sendMessage(activeTab.id, message, (response) => {
         const runtimeError = chrome.runtime?.lastError?.message;
         if (runtimeError) {
-          console.warn(`${zetaLogPrefix("popup")} tab_message_failed`, {
+          console.warn(`${chilabLogPrefix("popup")} tab_message_failed`, {
             tag,
             error: runtimeError,
             ...(extra || {}),
@@ -350,7 +350,7 @@
             onResponse(null);
           }
         } else {
-          console.info(`${zetaLogPrefix("popup")} tab_message_ok`, {
+          console.info(`${chilabLogPrefix("popup")} tab_message_ok`, {
             tag,
             ...(extra || {}),
             response: response || null,
@@ -415,8 +415,8 @@
     if (!key) {
       return;
     }
-    const row = macrosList.querySelector(`.zeta-shortcut-row[data-shortcut="${key}"]`)
-      || macrosList.querySelector(`.zeta-shortcut-row[data-shortcut-alt="${key}"]`);
+    const row = macrosList.querySelector(`.chilab-shortcut-row[data-shortcut="${key}"]`)
+      || macrosList.querySelector(`.chilab-shortcut-row[data-shortcut-alt="${key}"]`);
     if (!row) {
       return;
     }
@@ -431,7 +431,7 @@
       return;
     }
     const navCount = Math.max(1, panelNavButtons.length);
-    panelNav.style.setProperty("--zeta-top-nav-count", String(navCount));
+    panelNav.style.setProperty("--chilab-top-nav-count", String(navCount));
     const activeButton = panelNavButtons.find((button) => button.dataset.panel === panelName);
     if (!activeButton) {
       return;
@@ -708,19 +708,19 @@
       return null;
     }
     const container = document.createElement("section");
-    container.className = "zeta-activity-pipeline";
+    container.className = "chilab-activity-pipeline";
 
     const label = document.createElement("p");
-    label.className = "zeta-activity-pipeline-label";
+    label.className = "chilab-activity-pipeline-label";
     label.textContent = "Pipeline";
     container.appendChild(label);
 
     const flow = document.createElement("div");
-    flow.className = "zeta-activity-pipeline-flow";
+    flow.className = "chilab-activity-pipeline-flow";
     for (let index = 0; index < nodes.length; index += 1) {
       const node = nodes[index];
       const card = document.createElement("article");
-      card.className = `zeta-activity-pipeline-node zeta-activity-pipeline-node--${node.outcome || "active"}`;
+      card.className = `chilab-activity-pipeline-node chilab-activity-pipeline-node--${node.outcome || "active"}`;
 
       const title = document.createElement("strong");
       title.textContent = truncatePipelineText(node.label || "stage", 92);
@@ -731,7 +731,7 @@
 
       if (index < nodes.length - 1) {
         const arrow = document.createElement("span");
-        arrow.className = "zeta-activity-pipeline-arrow";
+        arrow.className = "chilab-activity-pipeline-arrow";
         arrow.textContent = "→";
         flow.appendChild(arrow);
       }
@@ -746,26 +746,26 @@
       return;
     }
     pipelineModalRoot = document.createElement("div");
-    pipelineModalRoot.className = "zeta-pipeline-modal";
+    pipelineModalRoot.className = "chilab-pipeline-modal";
     pipelineModalRoot.hidden = true;
     pipelineModalRoot.innerHTML = `
-      <div class="zeta-pipeline-modal-backdrop" data-close-pipeline-modal="1"></div>
-      <section class="zeta-pipeline-modal-card" role="dialog" aria-modal="true" aria-label="Pipeline trace">
-        <header class="zeta-pipeline-modal-head">
+      <div class="chilab-pipeline-modal-backdrop" data-close-pipeline-modal="1"></div>
+      <section class="chilab-pipeline-modal-card" role="dialog" aria-modal="true" aria-label="Pipeline trace">
+        <header class="chilab-pipeline-modal-head">
           <div>
-            <h3 class="zeta-pipeline-modal-title"></h3>
-            <p class="zeta-pipeline-modal-meta"></p>
+            <h3 class="chilab-pipeline-modal-title"></h3>
+            <p class="chilab-pipeline-modal-meta"></p>
           </div>
-          <button type="button" class="zeta-pipeline-modal-close" data-close-pipeline-modal="1">Close</button>
+          <button type="button" class="chilab-pipeline-modal-close" data-close-pipeline-modal="1">Close</button>
         </header>
-        <div class="zeta-pipeline-modal-body"></div>
+        <div class="chilab-pipeline-modal-body"></div>
       </section>
     `;
     document.body.appendChild(pipelineModalRoot);
-    pipelineModalCard = pipelineModalRoot.querySelector(".zeta-pipeline-modal-card");
-    pipelineModalTitle = pipelineModalRoot.querySelector(".zeta-pipeline-modal-title");
-    pipelineModalMeta = pipelineModalRoot.querySelector(".zeta-pipeline-modal-meta");
-    pipelineModalBody = pipelineModalRoot.querySelector(".zeta-pipeline-modal-body");
+    pipelineModalCard = pipelineModalRoot.querySelector(".chilab-pipeline-modal-card");
+    pipelineModalTitle = pipelineModalRoot.querySelector(".chilab-pipeline-modal-title");
+    pipelineModalMeta = pipelineModalRoot.querySelector(".chilab-pipeline-modal-meta");
+    pipelineModalBody = pipelineModalRoot.querySelector(".chilab-pipeline-modal-body");
     if (pipelineModalCard) {
       pipelineModalCard.setAttribute("tabindex", "-1");
     }
@@ -848,20 +848,20 @@
 
     if (summaryItems.length > 0) {
       const summary = document.createElement("p");
-      summary.className = "zeta-pipeline-summary";
+      summary.className = "chilab-pipeline-summary";
       summary.textContent = summaryItems.join(" · ");
       pipelineModalBody.appendChild(summary);
     }
 
     if (!Array.isArray(parsedTrace.stages) || parsedTrace.stages.length === 0) {
       const empty = document.createElement("p");
-      empty.className = "zeta-hint";
+      empty.className = "chilab-hint";
       empty.textContent = "No structured pipeline stages were found for this activity.";
       pipelineModalBody.appendChild(empty);
       const rawDetail = typeof detailText === "string" ? detailText : String(entry?.detailText || "").trim();
       if (rawDetail) {
         const raw = document.createElement("pre");
-        raw.className = "zeta-activity-detail";
+        raw.className = "chilab-activity-detail";
         raw.style.marginTop = "8px";
         raw.textContent = rawDetail;
         pipelineModalBody.appendChild(raw);
@@ -870,22 +870,22 @@
     }
 
     const list = document.createElement("div");
-    list.className = "zeta-pipeline-stage-list";
+    list.className = "chilab-pipeline-stage-list";
     const traceKey = `${title}|${time}|${parsedTrace.chunk}`;
     for (let index = 0; index < parsedTrace.stages.length; index += 1) {
       const stage = parsedTrace.stages[index];
       const stageId = `${traceKey}|${stage.index}|${stage.stage}`;
       const card = document.createElement("article");
-      card.className = `zeta-pipeline-stage zeta-pipeline-stage--${stage.outcome || "unknown"}`;
+      card.className = `chilab-pipeline-stage chilab-pipeline-stage--${stage.outcome || "unknown"}`;
       const toggle = document.createElement("button");
       toggle.type = "button";
-      toggle.className = "zeta-pipeline-stage-toggle";
+      toggle.className = "chilab-pipeline-stage-toggle";
       toggle.setAttribute("aria-expanded", "false");
       const name = document.createElement("strong");
-      name.className = "zeta-pipeline-stage-name";
+      name.className = "chilab-pipeline-stage-name";
       name.textContent = `${stage.index}. ${pipelineStageDisplayLabel(stage.stage)}`;
       const meta = document.createElement("span");
-      meta.className = "zeta-pipeline-stage-meta";
+      meta.className = "chilab-pipeline-stage-meta";
       const durationLabel = Number.isFinite(Number(stage.durationMs))
         ? formatInferenceDuration(Number(stage.durationMs))
         : "--";
@@ -893,10 +893,10 @@
       toggle.append(name, meta);
 
       const body = document.createElement("div");
-      body.className = "zeta-pipeline-stage-body";
+      body.className = "chilab-pipeline-stage-body";
       body.hidden = true;
       const details = document.createElement("p");
-      details.className = "zeta-pipeline-stage-details";
+      details.className = "chilab-pipeline-stage-details";
       details.textContent = truncatePipelineText(stage.details || "No stage details available.", 6000);
       body.appendChild(details);
 
@@ -1005,18 +1005,18 @@
       for (let activityIndex = 0; activityIndex < activity.length; activityIndex += 1) {
         const entry = activity[activityIndex];
         const li = document.createElement("li");
-        li.className = "zeta-activity-row";
+        li.className = "chilab-activity-row";
         const message = String(entry?.message || "Activity");
         const time = String(entry?.timeLabel || "");
         const detailText = String(entry?.detailText || "").trim();
         const parsedPipeline = detailText ? parseActivityPipelineTrace(detailText) : null;
         const head = document.createElement("div");
-        head.className = "zeta-activity-head";
+        head.className = "chilab-activity-head";
         const strong = document.createElement("strong");
-        strong.className = "zeta-activity-title";
+        strong.className = "chilab-activity-title";
         strong.textContent = message;
         const stamp = document.createElement("span");
-        stamp.className = "zeta-activity-time";
+        stamp.className = "chilab-activity-time";
         stamp.textContent = time;
         head.append(strong, stamp);
         li.append(head);
@@ -1030,10 +1030,10 @@
           }
 
           const actions = document.createElement("div");
-          actions.className = "zeta-activity-actions";
+          actions.className = "chilab-activity-actions";
           const viewPipelineBtn = document.createElement("button");
           viewPipelineBtn.type = "button";
-          viewPipelineBtn.className = "zeta-activity-pipeline-btn";
+          viewPipelineBtn.className = "chilab-activity-pipeline-btn";
           viewPipelineBtn.textContent = "View pipeline";
           viewPipelineBtn.addEventListener("click", (e) => {
             e.preventDefault();
@@ -1044,7 +1044,7 @@
           li.appendChild(actions);
 
           const pre = document.createElement("pre");
-          pre.className = "zeta-activity-detail";
+          pre.className = "chilab-activity-detail";
           pre.textContent = detailText;
           li.append(pre);
         }
@@ -1066,27 +1066,27 @@
         if (section !== lastSection) {
           lastSection = section;
           const subhead = document.createElement("li");
-          subhead.className = "zeta-macros-subsection";
+          subhead.className = "chilab-macros-subsection";
           subhead.textContent = section;
           macrosList.appendChild(subhead);
         }
         const li = document.createElement("li");
-        li.className = "zeta-shortcut-row";
+        li.className = "chilab-shortcut-row";
         li.dataset.shortcut = normalizeShortcutKey(macro.trigger);
         if (macro.altTrigger) {
           li.dataset.shortcutAlt = normalizeShortcutKey(macro.altTrigger);
         }
         const left = document.createElement("div");
-        left.className = "zeta-shortcut-left";
+        left.className = "chilab-shortcut-left";
         const text = document.createElement("strong");
-        text.className = "zeta-shortcut-text";
+        text.className = "chilab-shortcut-text";
         text.textContent = macro.text;
         const label = document.createElement("span");
-        label.className = "zeta-shortcut-label";
+        label.className = "chilab-shortcut-label";
         label.textContent = macro.label;
         left.append(text, label);
         const command = document.createElement("div");
-        command.className = "zeta-shortcut-kbd-wrap";
+        command.className = "chilab-shortcut-kbd-wrap";
         for (const keycap of macro.keys) {
           const kbd = document.createElement("kbd");
           kbd.textContent = keycap;
@@ -1210,7 +1210,7 @@
     if (notifyTab) {
       sendMessageToActiveTab(
         {
-          type: "zeta-chat-open-thread",
+          type: "chilab-chat-open-thread",
           threadId: id,
         },
         "chat_open_thread",
@@ -1226,7 +1226,7 @@
     }
     sendMessageToActiveTab(
       {
-        type: "zeta-chat-delete-thread",
+        type: "chilab-chat-delete-thread",
         threadId: id,
       },
       "chat_delete_thread",
@@ -1260,13 +1260,13 @@
       if (i % 2 === 0) {
         if (parts[i].length > 0) {
           const span = document.createElement("span");
-          span.className = "zeta-assistant-message-text";
+          span.className = "chilab-assistant-message-text";
           span.innerHTML = escapeHtml(parts[i]).replace(/\n/g, "<br>");
           fragment.appendChild(span);
         }
       } else {
         const code = document.createElement("pre");
-        code.className = "zeta-assistant-code";
+        code.className = "chilab-assistant-code";
         const codeInner = document.createElement("code");
         const content = parts[i].replace(/^\w*\n?/, "").trim();
         codeInner.textContent = content;
@@ -1298,28 +1298,28 @@
       for (const thread of sortedThreads) {
         const li = document.createElement("li");
         const wrap = document.createElement("div");
-        wrap.className = "zeta-assistant-thread-wrap";
+        wrap.className = "chilab-assistant-thread-wrap";
         const btn = document.createElement("button");
         btn.type = "button";
-        btn.className = "zeta-assistant-thread";
+        btn.className = "chilab-assistant-thread";
         if (thread.id === activeThreadId) {
           btn.classList.add("is-active");
         }
         if (thread.id === "general") {
           const pinIcon = document.createElement("span");
-          pinIcon.className = "zeta-assistant-thread-pin";
+          pinIcon.className = "chilab-assistant-thread-pin";
           pinIcon.setAttribute("aria-hidden", "true");
           pinIcon.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78 0.9A2 2 0 0 0 5 14.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1.76a2 2 0 0 0-1.11-1.79l-1.78-0.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4 1 1 0 0 1-1-1 2 2 0 0 0 0-4 1 1 0 0 1-1-1 2 2 0 0 0 0 4 1 1 0 0 1 1 1 2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>';
           btn.appendChild(pinIcon);
         }
         const title = document.createElement("strong");
-        title.className = "zeta-assistant-thread-title";
+        title.className = "chilab-assistant-thread-title";
         title.textContent = thread.title;
         const meta = document.createElement("p");
-        meta.className = "zeta-assistant-thread-meta";
+        meta.className = "chilab-assistant-thread-meta";
         meta.textContent = `${thread.severity || "unknown"} · ${thread.status || "idle"}`;
         const contentWrap = document.createElement("div");
-        contentWrap.className = "zeta-assistant-thread-content";
+        contentWrap.className = "chilab-assistant-thread-content";
         contentWrap.append(title, meta);
         btn.append(contentWrap);
         btn.addEventListener("click", () => {
@@ -1327,7 +1327,7 @@
         });
         const deleteBtn = document.createElement("button");
         deleteBtn.type = "button";
-        deleteBtn.className = "zeta-assistant-thread-delete";
+        deleteBtn.className = "chilab-assistant-thread-delete";
         deleteBtn.setAttribute("aria-label", "Delete thread");
         deleteBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>';
         deleteBtn.addEventListener("click", (e) => {
@@ -1356,14 +1356,14 @@
       const messages = Array.isArray(activeThread?.messages) ? activeThread.messages : [];
       for (const message of messages) {
         const li = document.createElement("li");
-        li.className = `zeta-assistant-message zeta-assistant-message--${message.role}`;
+        li.className = `chilab-assistant-message chilab-assistant-message--${message.role}`;
         if (message.error) {
-          li.classList.add("zeta-assistant-message--error");
+          li.classList.add("chilab-assistant-message--error");
         }
         const who = document.createElement("strong");
-        who.textContent = message.role === "assistant" ? "Zeta" : "You";
+        who.textContent = message.role === "assistant" ? "ChiLab" : "You";
         const body = document.createElement("div");
-        body.className = "zeta-assistant-message-body";
+        body.className = "chilab-assistant-message-body";
         body.appendChild(renderMessageBodyWithCodeBlocks(message.text));
         li.append(who, body);
         assistantMessages.appendChild(li);
@@ -1371,13 +1371,13 @@
       const showLoading = (assistantSending && activeThreadId === assistantSendingThreadId) || (activeThread && String(activeThread.status || "") === "thinking");
       if (showLoading) {
         const loadingLi = document.createElement("li");
-        loadingLi.className = "zeta-assistant-loading";
+        loadingLi.className = "chilab-assistant-loading";
         loadingLi.setAttribute("aria-live", "polite");
         const spinner = document.createElement("span");
-        spinner.className = "zeta-assistant-spinner";
+        spinner.className = "chilab-assistant-spinner";
         spinner.setAttribute("aria-hidden", "true");
         const step = document.createElement("span");
-        step.className = "zeta-assistant-loading-step";
+        step.className = "chilab-assistant-loading-step";
         step.textContent = assistantSendStep || "Thinking…";
         loadingLi.append(spinner, step);
         assistantMessages.appendChild(loadingLi);
@@ -1389,11 +1389,11 @@
         : queuedForActive;
       for (const item of queuedExcludingInFlight) {
         const li = document.createElement("li");
-        li.className = "zeta-assistant-message zeta-assistant-message--queued";
+        li.className = "chilab-assistant-message chilab-assistant-message--queued";
         const who = document.createElement("strong");
         who.textContent = "You";
         const body = document.createElement("div");
-        body.className = "zeta-assistant-message-body";
+        body.className = "chilab-assistant-message-body";
         body.textContent = `(Queued) ${item.message}`;
         li.append(who, body);
         assistantMessages.appendChild(li);
@@ -1483,7 +1483,7 @@
     }, QUEUE_RESPONSE_TIMEOUT_MS);
 
     sendMessageToActiveTab(
-      { type: "zeta-chat-send", threadId, message: text },
+      { type: "chilab-chat-send", threadId, message: text },
       "chat_send",
       () => ({ threadId, chars: text.length }),
       (response) => {
@@ -1492,11 +1492,11 @@
         window.clearTimeout(safetyTimeoutId);
         const wasThreadId = threadId;
         if (response == null) {
-          console.warn(`${zetaLogPrefix("assistant")} chat_send response is null – tab may be inactive or extension not injected`, {
+          console.warn(`${chilabLogPrefix("assistant")} chat_send response is null – tab may be inactive or extension not injected`, {
             hint: "Focus the Overleaf tab and ensure the extension content script is loaded.",
           });
         }
-        console.info(`${zetaLogPrefix("assistant")} chat_send response`, {
+        console.info(`${chilabLogPrefix("assistant")} chat_send response`, {
           ok: response?.ok,
           error: response?.error,
           source: response?.source,
@@ -1571,14 +1571,14 @@
   function sendAssistantPrompt() {
     const threadId = String(assistantSnapshot.activeThreadId || "");
     const text = String(assistantInput?.value || "").trim();
-    console.info(`${zetaLogPrefix("assistant")} sendAssistantPrompt`, {
+    console.info(`${chilabLogPrefix("assistant")} sendAssistantPrompt`, {
       threadId: threadId || "(empty)",
       hasText: !!text,
       textLength: text.length,
       activeThreadId: assistantSnapshot.activeThreadId,
     });
     if (!threadId || !text) {
-      console.warn(`${zetaLogPrefix("assistant")} sendAssistantPrompt skipped`, { reason: !threadId ? "no threadId" : "no text" });
+      console.warn(`${chilabLogPrefix("assistant")} sendAssistantPrompt skipped`, { reason: !threadId ? "no threadId" : "no text" });
       return;
     }
     if (assistantInput) assistantInput.value = "";
@@ -2011,14 +2011,14 @@
       const children = getVisibleChildren(parentId);
       const list = depth === 0 ? document.createDocumentFragment() : document.createElement("ul");
       if (depth > 0) {
-        list.className = "zeta-graph-children";
+        list.className = "chilab-graph-children";
       }
       for (const chunk of children) {
         const chunkId = String(chunk?.chunkId || "");
         const childList = buildNodes(chunkId, depth + 1);
         const isInnermost = childList.childElementCount === 0;
         const li = document.createElement("li");
-        li.className = "zeta-graph-node";
+        li.className = "chilab-graph-node";
         li.dataset.chunkId = chunkId;
         if (activeChunkId && chunkId === activeChunkId) {
           li.classList.add("is-active");
@@ -2026,15 +2026,15 @@
 
         const head = document.createElement("button");
         head.type = "button";
-        head.className = "zeta-graph-head";
+        head.className = "chilab-graph-head";
         head.setAttribute("aria-expanded", "false");
 
         const title = document.createElement("strong");
-        title.className = "zeta-graph-title";
+        title.className = "chilab-graph-title";
         title.textContent = graphLabel(chunk);
 
         const meta = document.createElement("span");
-        meta.className = "zeta-graph-meta";
+        meta.className = "chilab-graph-meta";
         const start = Number.isInteger(chunk?.start) ? chunk.start : 0;
         const end = Number.isInteger(chunk?.end) ? chunk.end : 0;
         const type = String(chunk?.type || "text");
@@ -2043,7 +2043,7 @@
         if (isInnermost) {
           const sparkle = document.createElement("button");
           sparkle.type = "button";
-          sparkle.className = "zeta-graph-sparkle";
+          sparkle.className = "chilab-graph-sparkle";
           sparkle.setAttribute("aria-label", "Analyze in Graph View");
           sparkle.title = "Analyze in Graph View";
           sparkle.textContent = "✦";
@@ -2066,12 +2066,12 @@
         li.appendChild(head);
 
         const body = document.createElement("div");
-        body.className = "zeta-graph-body";
+        body.className = "chilab-graph-body";
         if (isInnermost && PREVIEW_ELIGIBLE_CHUNK_TYPES.has(String(chunk?.type || "text"))) {
           const previewText = graphPreviewText(chunk);
           if (previewText) {
             const preview = document.createElement("p");
-            preview.className = "zeta-graph-preview";
+            preview.className = "chilab-graph-preview";
             preview.textContent = previewText;
             body.append(preview);
           }
@@ -2108,7 +2108,7 @@
 
     const tree = buildNodes(rootId, 0);
     graphList.appendChild(tree);
-    const visibleNodeCount = graphList.querySelectorAll(".zeta-graph-node").length;
+    const visibleNodeCount = graphList.querySelectorAll(".chilab-graph-node").length;
     graphCount.textContent = `${visibleNodeCount} nodes`;
     graphEmpty.style.display = visibleNodeCount > 0 ? "none" : "block";
   }
@@ -2184,11 +2184,11 @@
     if (readinessScore) readinessScore.textContent = "--/100";
     if (readinessStatus) readinessStatus.textContent = "Preparing pre-check...";
     if (certifiedStamp) {
-      certifiedStamp.className = "zeta-certified-stamp zeta-certified-stamp--checking";
+      certifiedStamp.className = "chilab-certified-stamp chilab-certified-stamp--checking";
       certifiedStamp.textContent = "Checking";
     }
     if (certifiedExplainer) {
-      certifiedExplainer.textContent = "Zeta is preparing a prototype scientific pre-check.";
+      certifiedExplainer.textContent = "ChiLab is preparing a prototype scientific pre-check.";
     }
   }
 
@@ -2198,7 +2198,7 @@
     if (readinessErrorText) readinessErrorText.textContent = message;
     if (readinessStatus) readinessStatus.textContent = "Pre-Check unavailable";
     if (certifiedStamp) {
-      certifiedStamp.className = "zeta-certified-stamp zeta-certified-stamp--needs-review";
+      certifiedStamp.className = "chilab-certified-stamp chilab-certified-stamp--needs-review";
       certifiedStamp.textContent = "Not checked";
     }
     if (copyStatus) copyStatus.textContent = "Run Demo Mode after the pre-check engine loads.";
@@ -2206,10 +2206,10 @@
 
   function stampClassForCertification(certification) {
     const key = String(certification?.key || "");
-    if (key === "checking") return "zeta-certified-stamp--checking";
-    if (key === "needs_review" || key === "not_checked") return "zeta-certified-stamp--needs-review";
-    if (key === "certified_demo_mode") return "zeta-certified-stamp--demo";
-    return "zeta-certified-stamp--passed";
+    if (key === "checking") return "chilab-certified-stamp--checking";
+    if (key === "needs_review" || key === "not_checked") return "chilab-certified-stamp--needs-review";
+    if (key === "certified_demo_mode") return "chilab-certified-stamp--demo";
+    return "chilab-certified-stamp--passed";
   }
 
   function renderList(target, items, ordered = false) {
@@ -2240,7 +2240,7 @@
     readinessCounts.replaceChildren();
     for (const [label, value] of metrics) {
       const div = document.createElement("div");
-      div.className = "zeta-readiness-metric";
+      div.className = "chilab-readiness-metric";
       div.innerHTML = `<strong>${Number(value) || 0}</strong><span>${escapeHtml(label)}</span>`;
       readinessCounts.appendChild(div);
     }
@@ -2251,10 +2251,10 @@
     reviewLedger.replaceChildren();
     for (const event of events || []) {
       const li = document.createElement("li");
-      li.className = "zeta-ledger-event";
+      li.className = "chilab-ledger-event";
       const status = String(event.status || "info").toLowerCase();
       li.innerHTML = `
-        <strong><span class="zeta-ledger-status zeta-ledger-status--${escapeHtml(status)}">${escapeHtml(status)}</span>${escapeHtml(event.title)}</strong>
+        <strong><span class="chilab-ledger-status chilab-ledger-status--${escapeHtml(status)}">${escapeHtml(status)}</span>${escapeHtml(event.title)}</strong>
         <span>${escapeHtml(event.description)}</span>
       `;
       reviewLedger.appendChild(li);
@@ -2269,7 +2269,7 @@
     if (readinessStatus) readinessStatus.textContent = report.statusBadge;
     if (readinessMode) readinessMode.textContent = report.demoMode ? "Demo Mode" : "Live Document";
     if (certifiedStamp) {
-      certifiedStamp.className = `zeta-certified-stamp ${stampClassForCertification(report.certification)}`;
+      certifiedStamp.className = `chilab-certified-stamp ${stampClassForCertification(report.certification)}`;
       certifiedStamp.textContent = report.certification.label;
     }
     if (certifiedExplainer) {
@@ -2279,7 +2279,7 @@
     renderList(reviewerConcerns, report.topReviewerConcerns || [], true);
     renderList(authorFixes, report.suggestedAuthorFixes || [], false);
     if (counterexampleBox) {
-      counterexampleBox.textContent = report.counterexample || "No warning selected. Run Zeta Pre-Check to generate an explanation.";
+      counterexampleBox.textContent = report.counterexample || "No warning selected. Run ChiLab Pre-Check to generate an explanation.";
     }
     renderReviewLedger(report.reviewLedger || []);
     if (copyStatus) {
@@ -2297,7 +2297,7 @@
     setPrecheckLoading("Running Demo Mode with a sample LaTeX paper...");
     window.setTimeout(() => {
       try {
-        const engine = window.__zetaPrecheck;
+        const engine = window.__chilabPrecheck;
         if (!engine?.buildPrecheckReport) {
           setPrecheckError("The local pre-check engine is missing. Reload the extension and try again.");
           return;
@@ -2328,7 +2328,7 @@
 
   async function copyReviewerReport() {
     try {
-      const engine = window.__zetaPrecheck;
+      const engine = window.__chilabPrecheck;
       if (!engine?.markdownReviewerReport) {
         throw new Error("Pre-check report engine is not loaded.");
       }
@@ -2590,7 +2590,7 @@
     });
   }
 
-  const exportLedgerBtn = document.getElementById("zeta-export-ledger");
+  const exportLedgerBtn = document.getElementById("chilab-export-ledger");
   if (exportLedgerBtn) {
     exportLedgerBtn.addEventListener("click", () => {
       const report = currentPrecheckReport;
@@ -2606,7 +2606,7 @@
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "zeta-ledger.json";
+      a.download = "chilab-ledger.json";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -2631,7 +2631,7 @@
   }
 
   document.addEventListener("keydown", (event) => {
-    console.info(`${zetaLogPrefix("popup")} keydown`, {
+    console.info(`${chilabLogPrefix("popup")} keydown`, {
       key: event.key,
       code: event.code,
       alt: event.altKey,
@@ -2644,7 +2644,7 @@
     if (!match) {
       return;
     }
-    console.info(`${zetaLogPrefix("popup")} shortcut_detected`, {
+    console.info(`${chilabLogPrefix("popup")} shortcut_detected`, {
       key: event.key,
       code: event.code,
       alt: event.altKey,
@@ -2691,7 +2691,7 @@
         renderAssistantSnapshot(changes[CHAT_SNAPSHOT_KEY].newValue);
       }
       } catch (error) {
-        console.warn(`${zetaLogPrefix("popup")} storage_change_render_error`, {
+        console.warn(`${chilabLogPrefix("popup")} storage_change_render_error`, {
           message: String(error?.message || error),
         });
       }

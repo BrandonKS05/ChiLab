@@ -1,8 +1,8 @@
-# Zeta
+# ChiLab
 
 **Grammarly for math.**
 
-Zeta checks your mathematical writing (e.g. in Overleaf) and suggests fixes, like a proofreader for LaTeX and formal math.
+ChiLab checks your mathematical writing (e.g. in Overleaf) and suggests fixes, like a proofreader for LaTeX and formal math.
 
 ## How to download / install
 
@@ -11,4 +11,4 @@ Zeta checks your mathematical writing (e.g. in Overleaf) and suggests fixes, lik
 3. Click **Load unpacked**.
 4. Choose the folder: `apps/overleaf-extension` inside this repo.
 
-After that, open an Overleaf project and use the Zeta panel to run checks and see suggestions.
+After that, open an Overleaf project and use the ChiLab panel to run checks and see suggestions.

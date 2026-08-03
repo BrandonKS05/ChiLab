@@ -3,49 +3,49 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>zeta</title>
+    <title>chilab</title>
     <link rel="stylesheet" href="popup.css" />
   </head>
   <body>
-    <main class="zeta-popup">
-      <header class="zeta-brand">
-        <div class="zeta-brand-left">
+    <main class="chilab-popup">
+      <header class="chilab-brand">
+        <div class="chilab-brand-left">
           <img
-            class="zeta-logo"
-            src="assets/zeta-black-white-2048.png"
-            alt="zeta logo"
+            class="chilab-logo"
+            src="assets/chilab-black-white-2048.png"
+            alt="chilab logo"
             width="56"
             height="56"
           />
-          <div class="zeta-brand-copy">
-            <h1>zeta</h1>
+          <div class="chilab-brand-copy">
+            <h1>chilab</h1>
             <p>Grammarly for Math</p>
           </div>
         </div>
-        <div class="zeta-brand-inference">
-          <p class="zeta-brand-inference-label">Last Inference</p>
-          <p id="zeta-last-inference" class="zeta-brand-inference-value">--</p>
-          <p id="zeta-last-status" class="zeta-brand-inference-subtle">waiting for a run</p>
+        <div class="chilab-brand-inference">
+          <p class="chilab-brand-inference-label">Last Inference</p>
+          <p id="chilab-last-inference" class="chilab-brand-inference-value">--</p>
+          <p id="chilab-last-status" class="chilab-brand-inference-subtle">waiting for a run</p>
         </div>
       </header>
 
-      <nav class="zeta-top-nav" aria-label="zeta sections">
-        <span class="zeta-top-nav-indicator" aria-hidden="true"></span>
-        <button type="button" class="zeta-top-nav-btn is-active" data-panel="main">Main</button>
-        <button type="button" class="zeta-top-nav-btn" data-panel="readiness">Readiness</button>
-        <button type="button" class="zeta-top-nav-btn" data-panel="history">History</button>
-        <button type="button" class="zeta-top-nav-btn" data-panel="graph">Graph View</button>
-        <button type="button" class="zeta-top-nav-btn" data-panel="assistant">Assistant</button>
+      <nav class="chilab-top-nav" aria-label="chilab sections">
+        <span class="chilab-top-nav-indicator" aria-hidden="true"></span>
+        <button type="button" class="chilab-top-nav-btn is-active" data-panel="main">Main</button>
+        <button type="button" class="chilab-top-nav-btn" data-panel="readiness">Readiness</button>
+        <button type="button" class="chilab-top-nav-btn" data-panel="history">History</button>
+        <button type="button" class="chilab-top-nav-btn" data-panel="graph">Graph View</button>
+        <button type="button" class="chilab-top-nav-btn" data-panel="assistant">Assistant</button>
       </nav>
 
-      <section class="zeta-panel is-active" data-panel-content="main">
-        <section class="zeta-mode-section">
-          <p class="zeta-section-label">Inference Mode</p>
-          <div class="zeta-mode-toggle" role="tablist" aria-label="zeta speed mode">
-            <span class="zeta-mode-indicator" aria-hidden="true"></span>
+      <section class="chilab-panel is-active" data-panel-content="main">
+        <section class="chilab-mode-section">
+          <p class="chilab-section-label">Inference Mode</p>
+          <div class="chilab-mode-toggle" role="tablist" aria-label="chilab speed mode">
+            <span class="chilab-mode-indicator" aria-hidden="true"></span>
             <button
               type="button"
-              class="zeta-mode-btn"
+              class="chilab-mode-btn"
               data-mode="fast"
               role="tab"
               aria-selected="false"
@@ -54,7 +54,7 @@
             </button>
             <button
               type="button"
-              class="zeta-mode-btn"
+              class="chilab-mode-btn"
               data-mode="accurate"
               role="tab"
               aria-selected="false"
@@ -63,7 +63,7 @@
             </button>
             <button
               type="button"
-              class="zeta-mode-btn"
+              class="chilab-mode-btn"
               data-mode="auto"
               role="tab"
               aria-selected="false"
@@ -71,201 +71,201 @@
               auto
             </button>
           </div>
-          <p id="zeta-mode-note" class="zeta-mode-note"></p>
+          <p id="chilab-mode-note" class="chilab-mode-note"></p>
         </section>
 
-        <section class="zeta-backend-section zeta-backend-section--stacked">
-          <p class="zeta-section-label">Checking</p>
-          <div class="zeta-backend-toggle-row">
-            <label class="zeta-backend-toggle">
-              <input id="zeta-auto-analyze-document-toggle" type="checkbox" />
+        <section class="chilab-backend-section chilab-backend-section--stacked">
+          <p class="chilab-section-label">Checking</p>
+          <div class="chilab-backend-toggle-row">
+            <label class="chilab-backend-toggle">
+              <input id="chilab-auto-analyze-document-toggle" type="checkbox" />
               <span>Auto-analyze document</span>
             </label>
           </div>
-          <p class="zeta-section-label">Autocomplete Settings</p>
-          <div class="zeta-backend-toggle-row">
-            <label class="zeta-backend-toggle">
-              <input id="zeta-autocomplete-enabled-toggle" type="checkbox" />
+          <p class="chilab-section-label">Autocomplete Settings</p>
+          <div class="chilab-backend-toggle-row">
+            <label class="chilab-backend-toggle">
+              <input id="chilab-autocomplete-enabled-toggle" type="checkbox" />
               <span>Enable autocomplete</span>
             </label>
           </div>
-          <div class="zeta-backend-toggle-row">
-            <label class="zeta-backend-toggle">
-              <input id="zeta-autocomplete-topk-toggle" type="checkbox" />
+          <div class="chilab-backend-toggle-row">
+            <label class="chilab-backend-toggle">
+              <input id="chilab-autocomplete-topk-toggle" type="checkbox" />
               <span>Show Top-K autocomplete list</span>
             </label>
           </div>
-          <div class="zeta-backend-toggle-row">
-            <label class="zeta-backend-toggle">
-              <input id="zeta-autocomplete-manual-toggle" type="checkbox" />
+          <div class="chilab-backend-toggle-row">
+            <label class="chilab-backend-toggle">
+              <input id="chilab-autocomplete-manual-toggle" type="checkbox" />
               <span>Manual trigger only (Cmd+Shift+M)</span>
             </label>
           </div>
-          <p id="zeta-backend-status" class="zeta-backend-status">Autocomplete uses the deployed Modal endpoint.</p>
+          <p id="chilab-backend-status" class="chilab-backend-status">Autocomplete uses the deployed Modal endpoint.</p>
         </section>
 
-        <section class="zeta-legend">
-          <div class="zeta-row">
-            <p class="zeta-section-label">Document Health</p>
-            <div class="zeta-health-meta">
-              <p id="zeta-health-stats" class="zeta-chip">0 cached · 0 pending</p>
-              <span class="zeta-info-wrap">
+        <section class="chilab-legend">
+          <div class="chilab-row">
+            <p class="chilab-section-label">Document Health</p>
+            <div class="chilab-health-meta">
+              <p id="chilab-health-stats" class="chilab-chip">0 cached · 0 pending</p>
+              <span class="chilab-info-wrap">
                 <button
-                  id="zeta-health-info"
-                  class="zeta-info-btn"
+                  id="chilab-health-info"
+                  class="chilab-info-btn"
                   type="button"
                   aria-label="How document health is calculated"
                 >
                   ?
                 </button>
-                <span id="zeta-health-tooltip" class="zeta-info-tooltip" role="tooltip">
+                <span id="chilab-health-tooltip" class="chilab-info-tooltip" role="tooltip">
                   Health score formula:
                   100 - severity penalty - density penalty - pending penalty.
                 </span>
               </span>
             </div>
           </div>
-          <div class="zeta-health">
-            <div class="zeta-health-meter"><span id="zeta-health-fill"></span></div>
-            <span id="zeta-health-label">100</span>
+          <div class="chilab-health">
+            <div class="chilab-health-meter"><span id="chilab-health-fill"></span></div>
+            <span id="chilab-health-label">100</span>
           </div>
         </section>
 
-        <section class="zeta-legend">
-          <div class="zeta-row">
-            <p class="zeta-section-label">Command Macros</p>
-            <p id="zeta-macros-count" class="zeta-chip">0 actions</p>
+        <section class="chilab-legend">
+          <div class="chilab-row">
+            <p class="chilab-section-label">Command Macros</p>
+            <p id="chilab-macros-count" class="chilab-chip">0 actions</p>
           </div>
-          <ul id="zeta-macros-list" class="zeta-list zeta-list--macros"></ul>
-          <p id="zeta-macros-empty" class="zeta-hint">No command macros available.</p>
+          <ul id="chilab-macros-list" class="chilab-list chilab-list--macros"></ul>
+          <p id="chilab-macros-empty" class="chilab-hint">No command macros available.</p>
         </section>
       </section>
 
-      <section class="zeta-panel" data-panel-content="readiness">
-        <section class="zeta-readiness-card zeta-readiness-hero">
-          <div class="zeta-readiness-head">
+      <section class="chilab-panel" data-panel-content="readiness">
+        <section class="chilab-readiness-card chilab-readiness-hero">
+          <div class="chilab-readiness-head">
             <div>
-              <p class="zeta-section-label">Zeta Journal Readiness</p>
-              <h2 id="zeta-readiness-score">--/100</h2>
-              <p id="zeta-readiness-status" class="zeta-readiness-status">Preparing pre-check...</p>
+              <p class="chilab-section-label">ChiLab Journal Readiness</p>
+              <h2 id="chilab-readiness-score">--/100</h2>
+              <p id="chilab-readiness-status" class="chilab-readiness-status">Preparing pre-check...</p>
             </div>
-            <div id="zeta-certified-stamp" class="zeta-certified-stamp zeta-certified-stamp--checking">
+            <div id="chilab-certified-stamp" class="chilab-certified-stamp chilab-certified-stamp--checking">
               Checking
             </div>
           </div>
-          <p id="zeta-certified-explainer" class="zeta-certified-explainer">
-            Zeta is preparing a prototype scientific pre-check.
+          <p id="chilab-certified-explainer" class="chilab-certified-explainer">
+            ChiLab is preparing a prototype scientific pre-check.
           </p>
-          <div class="zeta-readiness-actions">
-            <button id="zeta-precheck-demo" class="zeta-reviewer-btn" type="button">Run Demo Mode</button>
-            <button id="zeta-copy-reviewer-report" class="zeta-reviewer-btn zeta-reviewer-btn--primary" type="button">Copy Reviewer Report</button>
-            <button id="zeta-export-ledger" class="zeta-reviewer-btn" type="button">Export Ledger</button>
+          <div class="chilab-readiness-actions">
+            <button id="chilab-precheck-demo" class="chilab-reviewer-btn" type="button">Run Demo Mode</button>
+            <button id="chilab-copy-reviewer-report" class="chilab-reviewer-btn chilab-reviewer-btn--primary" type="button">Copy Reviewer Report</button>
+            <button id="chilab-export-ledger" class="chilab-reviewer-btn" type="button">Export Ledger</button>
           </div>
-          <p id="zeta-copy-status" class="zeta-copy-status" aria-live="polite"></p>
+          <p id="chilab-copy-status" class="chilab-copy-status" aria-live="polite"></p>
           <textarea
-            id="zeta-reviewer-report-preview"
-            class="zeta-reviewer-report-preview"
+            id="chilab-reviewer-report-preview"
+            class="chilab-reviewer-report-preview"
             readonly
             aria-label="Generated reviewer report Markdown"
           ></textarea>
         </section>
 
-        <section id="zeta-readiness-loading" class="zeta-readiness-card zeta-readiness-state">
+        <section id="chilab-readiness-loading" class="chilab-readiness-card chilab-readiness-state">
           <strong>Loading Pre-Check</strong>
           <span>Building a local scientific publishing report from deterministic prototype checks.</span>
         </section>
 
-        <section id="zeta-readiness-error" class="zeta-readiness-card zeta-readiness-state zeta-readiness-state--error" style="display:none">
+        <section id="chilab-readiness-error" class="chilab-readiness-card chilab-readiness-state chilab-readiness-state--error" style="display:none">
           <strong>Pre-Check unavailable</strong>
-          <span id="zeta-readiness-error-text">The local pre-check engine could not be loaded.</span>
+          <span id="chilab-readiness-error-text">The local pre-check engine could not be loaded.</span>
         </section>
 
-        <section class="zeta-readiness-card">
-          <div class="zeta-row">
-            <p class="zeta-section-label">Detected Structure</p>
-            <p id="zeta-readiness-mode" class="zeta-chip">Demo Mode</p>
+        <section class="chilab-readiness-card">
+          <div class="chilab-row">
+            <p class="chilab-section-label">Detected Structure</p>
+            <p id="chilab-readiness-mode" class="chilab-chip">Demo Mode</p>
           </div>
-          <div id="zeta-readiness-counts" class="zeta-readiness-grid"></div>
+          <div id="chilab-readiness-counts" class="chilab-readiness-grid"></div>
         </section>
 
-        <section class="zeta-readiness-card">
-          <p class="zeta-section-label">Top Reviewer Concerns</p>
-          <ol id="zeta-reviewer-concerns" class="zeta-readiness-list"></ol>
+        <section class="chilab-readiness-card">
+          <p class="chilab-section-label">Top Reviewer Concerns</p>
+          <ol id="chilab-reviewer-concerns" class="chilab-readiness-list"></ol>
         </section>
 
-        <section class="zeta-readiness-card">
-          <p class="zeta-section-label">Suggested Author Fixes</p>
-          <ul id="zeta-author-fixes" class="zeta-readiness-list"></ul>
+        <section class="chilab-readiness-card">
+          <p class="chilab-section-label">Suggested Author Fixes</p>
+          <ul id="chilab-author-fixes" class="chilab-readiness-list"></ul>
         </section>
 
-        <section class="zeta-readiness-card">
-          <p class="zeta-section-label">Counterexample Playground</p>
-          <div id="zeta-counterexample-box" class="zeta-counterexample-box">
+        <section class="chilab-readiness-card">
+          <p class="chilab-section-label">Counterexample Playground</p>
+          <div id="chilab-counterexample-box" class="chilab-counterexample-box">
             Select a warning to generate a local explanation.
           </div>
         </section>
 
-        <section class="zeta-readiness-card">
-          <p class="zeta-section-label">Review Ledger</p>
-          <ol id="zeta-review-ledger" class="zeta-ledger-list"></ol>
+        <section class="chilab-readiness-card">
+          <p class="chilab-section-label">Review Ledger</p>
+          <ol id="chilab-review-ledger" class="chilab-ledger-list"></ol>
         </section>
       </section>
 
-      <section class="zeta-panel" data-panel-content="history">
-        <section class="zeta-legend zeta-history-legend">
-          <div class="zeta-row">
-            <p class="zeta-section-label">Activity History</p>
-            <p id="zeta-activity-count" class="zeta-chip">0</p>
+      <section class="chilab-panel" data-panel-content="history">
+        <section class="chilab-legend chilab-history-legend">
+          <div class="chilab-row">
+            <p class="chilab-section-label">Activity History</p>
+            <p id="chilab-activity-count" class="chilab-chip">0</p>
           </div>
-          <ul id="zeta-activity-list" class="zeta-list"></ul>
-          <p id="zeta-activity-empty" class="zeta-hint">No activity yet.</p>
+          <ul id="chilab-activity-list" class="chilab-list"></ul>
+          <p id="chilab-activity-empty" class="chilab-hint">No activity yet.</p>
         </section>
       </section>
 
-      <section class="zeta-panel" data-panel-content="graph">
-        <section class="zeta-legend">
-          <div class="zeta-row">
-            <p class="zeta-section-label">Graph View</p>
-            <p id="zeta-graph-count" class="zeta-chip">0 nodes</p>
+      <section class="chilab-panel" data-panel-content="graph">
+        <section class="chilab-legend">
+          <div class="chilab-row">
+            <p class="chilab-section-label">Graph View</p>
+            <p id="chilab-graph-count" class="chilab-chip">0 nodes</p>
           </div>
-          <ul id="zeta-graph-list" class="zeta-list zeta-list--graph"></ul>
-          <p id="zeta-graph-empty" class="zeta-hint">No chunk graph yet.</p>
+          <ul id="chilab-graph-list" class="chilab-list chilab-list--graph"></ul>
+          <p id="chilab-graph-empty" class="chilab-hint">No chunk graph yet.</p>
         </section>
       </section>
 
-      <section class="zeta-panel" data-panel-content="assistant">
-        <section class="zeta-legend zeta-assistant-legend">
-          <div class="zeta-row">
-            <p class="zeta-section-label">Assistant</p>
-            <p id="zeta-assistant-count" class="zeta-chip">0 threads</p>
+      <section class="chilab-panel" data-panel-content="assistant">
+        <section class="chilab-legend chilab-assistant-legend">
+          <div class="chilab-row">
+            <p class="chilab-section-label">Assistant</p>
+            <p id="chilab-assistant-count" class="chilab-chip">0 threads</p>
           </div>
-          <div class="zeta-assistant-layout" id="zeta-assistant-layout">
-            <div class="zeta-assistant-threads-column">
-              <div class="zeta-assistant-threads-wrap">
-                <ul id="zeta-assistant-threads" class="zeta-list zeta-list--assistant-threads"></ul>
-                <p id="zeta-assistant-threads-empty" class="zeta-hint">
+          <div class="chilab-assistant-layout" id="chilab-assistant-layout">
+            <div class="chilab-assistant-threads-column">
+              <div class="chilab-assistant-threads-wrap">
+                <ul id="chilab-assistant-threads" class="chilab-list chilab-list--assistant-threads"></ul>
+                <p id="chilab-assistant-threads-empty" class="chilab-hint">
                   No current issues to explain.
                 </p>
               </div>
-              <div class="zeta-assistant-threads-footer">
-                <button type="button" id="zeta-assistant-collapse" class="zeta-assistant-collapse" aria-label="Collapse thread list">&#xAB; Collapse</button>
+              <div class="chilab-assistant-threads-footer">
+                <button type="button" id="chilab-assistant-collapse" class="chilab-assistant-collapse" aria-label="Collapse thread list">&#xAB; Collapse</button>
               </div>
             </div>
-            <div class="zeta-assistant-chat">
-              <div id="zeta-assistant-meta" class="zeta-assistant-meta">Select an issue thread.</div>
-              <ul id="zeta-assistant-messages" class="zeta-list zeta-list--assistant-messages"></ul>
-              <p id="zeta-assistant-messages-empty" class="zeta-hint">Ask why an issue happened.</p>
-              <form id="zeta-assistant-form" class="zeta-assistant-form">
+            <div class="chilab-assistant-chat">
+              <div id="chilab-assistant-meta" class="chilab-assistant-meta">Select an issue thread.</div>
+              <ul id="chilab-assistant-messages" class="chilab-list chilab-list--assistant-messages"></ul>
+              <p id="chilab-assistant-messages-empty" class="chilab-hint">Ask why an issue happened.</p>
+              <form id="chilab-assistant-form" class="chilab-assistant-form">
                 <input
-                  id="zeta-assistant-input"
-                  class="zeta-assistant-input"
+                  id="chilab-assistant-input"
+                  class="chilab-assistant-input"
                   type="text"
                   placeholder="Ask why this error exists..."
                   autocomplete="off"
                 />
-                <button id="zeta-assistant-send" class="zeta-assistant-send" type="submit">Send</button>
+                <button id="chilab-assistant-send" class="chilab-assistant-send" type="submit">Send</button>
               </form>
-              <p id="zeta-assistant-queue" class="zeta-assistant-queue" aria-live="polite"></p>
+              <p id="chilab-assistant-queue" class="chilab-assistant-queue" aria-live="polite"></p>
             </div>
           </div>
         </section>

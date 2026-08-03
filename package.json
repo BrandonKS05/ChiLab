@@ -1,10 +1,10 @@
 {
-  "name": "zeta",
+  "name": "chilab",
   "private": true,
   "scripts": {
-    "zeta:check": "node apps/overleaf-extension/precheck/cli.js",
-    "zeta:smoke:backend": "node scripts/smoke_test.js",
-    "zeta:smoke:live": "node scripts/smoke_test.js",
+    "chilab:check": "node apps/overleaf-extension/precheck/cli.js",
+    "chilab:smoke:backend": "node scripts/smoke_test.js",
+    "chilab:smoke:live": "node scripts/smoke_test.js",
     "test:js": "node --test apps/overleaf-extension/tests/precheck.test.js",
     "test": "npm run test:js"
   }

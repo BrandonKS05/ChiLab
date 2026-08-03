@@ -6,7 +6,7 @@ Demo-finding script for (1) analyze, (2) autocomplete, (3) underlines.
 - Autocomplete: Prefixes with complicated math symbols → top and top-k completions
   (extension uses max_candidates=3; we test both top-1 and top-k for demo clips).
 - Underlines: Find text that yields YELLOW (suggestion / minor) vs RED (error / major).
-  Frontend: .zeta-highlight--warning = yellow, .zeta-highlight--error = red.
+  Frontend: .chilab-highlight--warning = yellow, .chilab-highlight--error = red.
 
 Usage:
   # Analyze (original behavior)
@@ -34,7 +34,7 @@ from urllib.parse import urljoin
 import requests
 
 # Default Modal endpoint (must match Overleaf extension MODAL_BASE_URL if using same deployment)
-DEFAULT_BASE_URL = "https://amirzeinali--herald-translator-translator-v1-translate-batch.modal.run"
+DEFAULT_BASE_URL = "https://brandonks05--deepseek-prover-v2-api.modal.run"
 
 # ---------------------------------------------------------------------------
 # Autocomplete: prefixes with sophisticated math (LaTeX and Unicode).
