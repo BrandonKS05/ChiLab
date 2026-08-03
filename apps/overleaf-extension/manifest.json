@@ -4,7 +4,11 @@
   "version": "0.4.0",
   "description": "Grammarly for Math",
   "permissions": ["storage"],
-  "host_permissions": ["<all_urls>"],
+  "host_permissions": [
+    "https://*.overleaf.com/*",
+    "http://localhost:8000/*",
+    "https://brandonks05--deepseek-prover-v2-api.modal.run/*"
+  ],
   "icons": {
     "16": "assets/icon-16.png",
     "32": "assets/icon-32.png",
