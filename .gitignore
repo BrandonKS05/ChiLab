@@ -16,3 +16,6 @@ chilab-report.json
 chilab-report.md
 *.log
 .lean-state/
+
+# packaged extension artifacts
+*.zip
